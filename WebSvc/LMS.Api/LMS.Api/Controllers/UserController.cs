@@ -75,6 +75,7 @@ namespace LMS.Api.Controllers
         #endregion
 
         #region validate user
+
         /// <summary>
         /// Validate user
         /// </summary>
