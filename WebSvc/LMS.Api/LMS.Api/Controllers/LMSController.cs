@@ -25,7 +25,6 @@ namespace LMS.Api.Controllers
                 try
                 {
                     await lmsService.AddCourse(course);
-
                     return Ok("Course Added.");
                 }
                 catch (Exception ex)
