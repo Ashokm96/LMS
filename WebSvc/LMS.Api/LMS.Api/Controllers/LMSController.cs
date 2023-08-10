@@ -16,6 +16,38 @@ namespace LMS.Api.Controllers
             this.lmsService = _lmsService;
         }
 
+        [HttpGet]
+        [Route("/api/v1.0/lms/courses/getall")]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var res = await lmsService.GetAllCourses();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in getall courses: {ex}.");
+                return BadRequest("Unable to get all course.");
+            }
+        }
+
+        [HttpGet]
+        [Route("/api/v1.0/lms/courses/info/{technology}")]
+        public async Task<IActionResult> GetByCouseName(string technology)
+        {
+            try
+            {
+                var res = await lmsService.GetCourse(technology);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in get by couse name: {ex}.");
+                return BadRequest("Unable to get course.");
+            }
+        }
+
         [HttpPost]
         [Route("/api/v1.0/lms/courses/add")]
         public async Task<ActionResult> Post(Course course)
@@ -29,7 +61,7 @@ namespace LMS.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    logger.Error($"An error occurred in AddCourse: {ex}.");
+                    logger.Error($"An error occurred in add course: {ex}.");
                     return BadRequest("Unable to add course.");
                 }
             }

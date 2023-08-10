@@ -1,6 +1,7 @@
 ﻿using LMS.Api.Entities;
 using LMS.Api.Models;
 using LMS.Api.Repository.Interface;
+using MongoDB.Driver;
 
 namespace LMS.Api.Repository.Implementation
 {
@@ -20,7 +21,34 @@ namespace LMS.Api.Repository.Implementation
             }
             catch (Exception ex)
             {
-                logger.Error($"An error occurred in AddCourse: {ex}");
+                logger.Error($"An error occurred in add course: {ex}");
+            }
+        }
+
+        public async Task<List<Course>> GetAllCourses()
+        {
+            try
+            {
+                return await dbContext.course.Find(_ => true).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in get all courses: {ex}");
+                return null;
+            }
+        }
+
+        public async Task<Course> GetCourse(string course)
+        {
+            try
+            {
+                var course_filter = Builders<Course>.Filter.Eq(m => m.Name, course);
+                return await dbContext.course.Find(course_filter).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in get course: {ex}");
+                return null;
             }
         }
     }

@@ -16,5 +16,15 @@ namespace LMS.Api.Services.Implementation
         {
             await lmsRepository.AddCourse(course);
         }
+
+        public async Task<List<Course>> GetAllCourses()
+        {
+           return  await lmsRepository.GetAllCourses();
+        }
+
+        public async Task<Course> GetCourse(string course)
+        {
+            return await lmsRepository.GetCourse(course);
+        }
     }
 }
