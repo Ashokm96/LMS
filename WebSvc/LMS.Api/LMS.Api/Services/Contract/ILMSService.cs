@@ -7,5 +7,7 @@ namespace LMS.Api.Services.Contract
         Task AddCourse(Course course);
         Task<List<Course>> GetAllCourses();
         Task<Course> GetCourse(string course);
+        Task<List<Course>> GetCouseByDuration(string course, int durationFromRange, int durationToRange);
+
     }
 }

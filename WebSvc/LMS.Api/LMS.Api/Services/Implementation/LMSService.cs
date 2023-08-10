@@ -26,5 +26,11 @@ namespace LMS.Api.Services.Implementation
         {
             return await lmsRepository.GetCourse(course);
         }
+
+
+        public async Task<List<Course>> GetCouseByDuration(string course, int durationFromRange, int durationToRange)
+        {
+            return await lmsRepository.GetCouseByDuration(course,durationFromRange,durationToRange);
+        }
     }
 }

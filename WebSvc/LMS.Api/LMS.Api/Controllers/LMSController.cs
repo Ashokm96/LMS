@@ -48,6 +48,22 @@ namespace LMS.Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/api/v/1.0/lms/courses/get/{technology}/{durationFromRange}/{durationToRange}")]
+        public async Task<IActionResult> GetCouseByDuration(string technology,int durationFromRange,int durationToRange)
+        {
+            try
+            {
+                var res = await lmsService.GetCouseByDuration(technology,durationFromRange,durationToRange);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in get by couse name: {ex}.");
+                return BadRequest("Unable to get course.");
+            }
+        }
+
         [HttpPost]
         [Route("/api/v1.0/lms/courses/add")]
         public async Task<ActionResult> Post(Course course)
