@@ -7,6 +7,7 @@ namespace LMS.Api.Repository.Interface
         Task AddCourse(Course Course);
         Task<List<Course>> GetAllCourses();
         Task<Course> GetCourse(string course);
+        Task<List<Course>> GetCouseByDuration(string course, int durationFromRange, int durationToRange);
 
     }
 }

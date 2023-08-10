@@ -51,5 +51,24 @@ namespace LMS.Api.Repository.Implementation
                 return null;
             }
         }
+
+        public async Task<List<Course>> GetCouseByDuration(string course, int durationFromRange, int durationToRange)
+        {
+            try
+            {
+                var filter = Builders<Course>.Filter.And(
+                 Builders<Course>.Filter.Gte(course => course.Duration, durationFromRange),
+                 Builders<Course>.Filter.Lte(course => course.Duration, durationToRange));
+
+                var courses = dbContext.course.Find(filter).ToList();
+                return courses;
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in get couse by duration: {ex}");
+                return null;
+            }
+            
+        }
     }
 }
