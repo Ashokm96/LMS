@@ -8,6 +8,7 @@ namespace LMS.Api.Repository.Interface
         Task<List<Course>> GetAllCourses();
         Task<Course> GetCourse(string course);
         Task<List<Course>> GetCouseByDuration(string course, int durationFromRange, int durationToRange);
+        Task DeleteCourse(string courseName);
 
     }
 }

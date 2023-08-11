@@ -17,6 +17,11 @@ namespace LMS.Api.Services.Implementation
             await lmsRepository.AddCourse(course);
         }
 
+        public async Task DeleteCourse(string courseName)
+        {
+            await lmsRepository.DeleteCourse(courseName);
+        }
+
         public async Task<List<Course>> GetAllCourses()
         {
            return  await lmsRepository.GetAllCourses();
