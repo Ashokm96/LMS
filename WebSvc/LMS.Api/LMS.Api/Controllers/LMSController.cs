@@ -1,5 +1,6 @@
 ﻿using LMS.Api.Models;
 using LMS.Api.Services.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LMS.Api.Controllers
@@ -20,6 +21,7 @@ namespace LMS.Api.Controllers
         /// </summary>
         [HttpGet]
         [Route("/api/v1.0/lms/courses/getall")]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             try
@@ -39,6 +41,7 @@ namespace LMS.Api.Controllers
         /// </summary>
         [HttpGet]
         [Route("/api/v1.0/lms/courses/info/{technology}")]
+        [Authorize]
         public async Task<IActionResult> GetByCouseName(string technology)
         {
             try
@@ -58,6 +61,7 @@ namespace LMS.Api.Controllers
         /// </summary>
         [HttpGet]
         [Route("/api/v/1.0/lms/courses/get/{technology}/{durationFromRange}/{durationToRange}")]
+        [Authorize]
         public async Task<IActionResult> GetCouseByDuration(string technology,int durationFromRange,int durationToRange)
         {
             try
@@ -77,6 +81,7 @@ namespace LMS.Api.Controllers
         /// </summary>
         [HttpPost]
         [Route("/api/v1.0/lms/courses/add")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult> Post(Course course)
         {
             if (ModelState.IsValid)
@@ -103,6 +108,7 @@ namespace LMS.Api.Controllers
         /// </summary>
         [HttpDelete]
         [Route("/api/v1.0/lms/courses/delete/{coursename}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> DeleteByCouseName(string coursename)
         {
             try

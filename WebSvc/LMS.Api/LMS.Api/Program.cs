@@ -15,7 +15,10 @@ var log4netRepository = log4net.LogManager.GetRepository(Assembly.GetEntryAssemb
 log4net.Config.XmlConfigurator.Configure(log4netRepository, new FileInfo("log4net.config"));
 
 builder.Services.AddControllers();
-builder.Services.AddCors(options => { options.AddPolicy("CORSPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((hosts) => true));});
+builder.Services.AddCors(options => 
+{ 
+    options.AddPolicy("CORSPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((hosts) => true));
+});
 
 //Add  Swagger
 //builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Learning Management System", Version = "v1" }); });
@@ -89,11 +92,11 @@ builder.Services.AddAuthorization(options =>
 builder.Services.Configure<DBConfiguration>(builder.Configuration.GetSection("DBConfiguration"));
 builder.Services.AddSingleton<IMongoDbContext, MongoDbContext>();
 // Add repositories
-builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ILMSRepository, LMSRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 // Add services
-builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ILMSService, LMSService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Host.ConfigureLogging(logger => {
@@ -105,12 +108,19 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    //app.UseSwaggerUI();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Learning Management System v1"));
 }
 app.UseCors("CORSPolicy");
+
 app.UseHttpsRedirection();
-app.UseAuthorization();
+
+app.UseAuthentication();
+
 app.UseRouting();
+
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();
