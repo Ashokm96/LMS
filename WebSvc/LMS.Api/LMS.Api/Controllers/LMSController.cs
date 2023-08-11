@@ -1,5 +1,4 @@
 ﻿using LMS.Api.Models;
-using LMS.Api.Repository.Implementation;
 using LMS.Api.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +15,9 @@ namespace LMS.Api.Controllers
             this.lmsService = _lmsService;
         }
 
+        /// <summary>
+        /// get all courses
+        /// </summary>
         [HttpGet]
         [Route("/api/v1.0/lms/courses/getall")]
         public async Task<IActionResult> Get()
@@ -32,6 +34,9 @@ namespace LMS.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// get course by technology
+        /// </summary>
         [HttpGet]
         [Route("/api/v1.0/lms/courses/info/{technology}")]
         public async Task<IActionResult> GetByCouseName(string technology)
@@ -48,6 +53,9 @@ namespace LMS.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// get course by technology and duration
+        /// </summary>
         [HttpGet]
         [Route("/api/v/1.0/lms/courses/get/{technology}/{durationFromRange}/{durationToRange}")]
         public async Task<IActionResult> GetCouseByDuration(string technology,int durationFromRange,int durationToRange)
@@ -64,6 +72,9 @@ namespace LMS.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// add new course
+        /// </summary>
         [HttpPost]
         [Route("/api/v1.0/lms/courses/add")]
         public async Task<ActionResult> Post(Course course)
@@ -84,6 +95,30 @@ namespace LMS.Api.Controllers
             else
             {
                return BadRequest("Bad Request.");
+            }
+        }
+
+        /// <summary>
+        /// delete course by name
+        /// </summary>
+        [HttpDelete]
+        [Route("/api/v1.0/lms/courses/delete/{coursename}")]
+        public async Task<IActionResult> DeleteByCouseName(string coursename)
+        {
+            try
+            {
+                var res = await lmsService.GetCourse(coursename);
+                if (res == null)
+                {
+                    return BadRequest("Course details not found!"); 
+                }
+                await lmsService.DeleteCourse(coursename);
+                return Ok("Course deleted Successfully");
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in delete couse: {ex}.");
+                return BadRequest("Unable to delete course.");
             }
         }
     }

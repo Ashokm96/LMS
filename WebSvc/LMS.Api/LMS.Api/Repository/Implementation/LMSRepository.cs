@@ -25,6 +25,18 @@ namespace LMS.Api.Repository.Implementation
             }
         }
 
+        public async Task DeleteCourse(string courseName)
+        {
+            try
+            {
+                await dbContext.course.DeleteOneAsync(x => x.Name == courseName);
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occurred in delete course: {ex}");
+            }
+        }
+
         public async Task<List<Course>> GetAllCourses()
         {
             try
