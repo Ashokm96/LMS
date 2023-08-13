@@ -40,5 +40,37 @@ namespace LMS.API.Test
             Assert.That(result.StatusCode, Is.EqualTo(200));
             Assert.That(result.Value, Is.EqualTo("Course deleted Successfully"));
         }
+
+        [Test]
+        public async Task DeleteByCourseName_CourseNotFound_ReturnsBadRequest()
+        {
+            // Arrange
+            string courseName = "NonExistentCourse";
+            lmsServiceMock.Setup(s => s.GetCourse(courseName)).ReturnsAsync(null as Course);
+
+            // Act
+            var result = await lmsController.DeleteByCouseName(courseName) as BadRequestObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.That(result.StatusCode, Is.EqualTo(400));
+            Assert.That(result.Value, Is.EqualTo("Course details not found!"));
+        }
+
+        [Test]
+        public async Task DeleteByCourseName_ExceptionOccurs_ReturnsBadRequest()
+        {
+            // Arrange
+            string courseName = "SampleCourse";
+            lmsServiceMock.Setup(s => s.GetCourse(courseName)).ThrowsAsync(new Exception());
+
+            // Act
+            var result = await lmsController.DeleteByCouseName(courseName) as BadRequestObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.That(result.StatusCode, Is.EqualTo(400));
+            Assert.That(result.Value, Is.EqualTo("Unable to delete course."));
+        }
     }
 }
