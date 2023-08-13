@@ -205,6 +205,39 @@ namespace LMS.API.Test
             var badRequestResult = result as BadRequestObjectResult;
             Assert.That(badRequestResult.Value, Is.EqualTo("Unable to get course."));
         }
-    }
 
+        [Test]
+        public async Task Get_ValidRequest_ReturnsOkResult()
+        {
+            // Arrange
+            var expectedCourses = new List<Course> { /* Initialize expected course objects */ };
+
+            lmsServiceMock.Setup(service => service.GetAllCourses())
+                          .ReturnsAsync(expectedCourses);
+
+            // Act
+            var result = await lmsController.Get();
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result);
+            var okResult = result as OkObjectResult;
+            Assert.That(okResult.Value, Is.EqualTo(expectedCourses));
+        }
+
+        [Test]
+        public async Task Get_ServiceThrowsException_ReturnsBadRequest()
+        {
+            // Arrange
+            lmsServiceMock.Setup(service => service.GetAllCourses())
+                          .Throws(new Exception("Sample exception message"));
+
+            // Act
+            var result = await lmsController.Get();
+
+            // Assert
+            Assert.IsInstanceOf<BadRequestObjectResult>(result);
+            var badRequestResult = result as BadRequestObjectResult;
+            Assert.That(badRequestResult.Value, Is.EqualTo("Unable to get all course."));
+        }
+    }
 }
