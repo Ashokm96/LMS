@@ -168,5 +168,43 @@ namespace LMS.API.Test
             var badRequestResult = result as BadRequestObjectResult;
             Assert.That(badRequestResult.Value, Is.EqualTo("Unable to get course."));
         }
+
+        [Test]
+        public async Task GetByCouseName_ValidTechnology_ReturnsOkResult()
+        {
+            // Arrange
+            var technology = "SampleTechnology";
+            var expectedCourse = new Course { /* Initialize expected course object */ };
+
+            lmsServiceMock.Setup(service => service.GetCourse(technology))
+                          .ReturnsAsync(expectedCourse);
+
+            // Act
+            var result = await lmsController.GetByCouseName(technology);
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result);
+            var okResult = result as OkObjectResult;
+            Assert.That(okResult.Value, Is.EqualTo(expectedCourse));
+        }
+
+        [Test]
+        public async Task GetByCouseName_ServiceThrowsException_ReturnsBadRequest()
+        {
+            // Arrange
+            var technology = "SampleTechnology";
+
+            lmsServiceMock.Setup(service => service.GetCourse(technology))
+                          .Throws(new Exception("Sample exception message"));
+
+            // Act
+            var result = await lmsController.GetByCouseName(technology);
+
+            // Assert
+            Assert.IsInstanceOf<BadRequestObjectResult>(result);
+            var badRequestResult = result as BadRequestObjectResult;
+            Assert.That(badRequestResult.Value, Is.EqualTo("Unable to get course."));
+        }
     }
+
 }
