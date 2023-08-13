@@ -57,5 +57,71 @@ namespace LMS.API.Test
             Assert.That(result.StatusCode, Is.EqualTo(400));
             Assert.That(result.Value, Is.EqualTo("unauthorized user"));
         }
+
+        [Test]
+        public void Post_NullUsers_ReturnsErrorMessage()
+        {
+            // Arrange
+            Users nullUsers = null;
+
+            // Act
+            var actionResult = _controller.Post(nullUsers);
+            var result = actionResult.Value as Result<string>;
+
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.AreEqual("User details cannot be null.", result.ErrorMessage);
+        }
+
+        [Test]
+        public void Post_InvalidEmailFormat_ReturnsBadRequest()
+        {
+            // Arrange
+            Users invalidEmailUsers = new Users { Email = "invalidemail", Password = "validpassword", UserName = "validusername" };
+
+            // Act
+            var actionResult = _controller.Post(invalidEmailUsers);
+            var result = actionResult.Result as BadRequestObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.That(result.StatusCode, Is.EqualTo(400));
+            Assert.That(result.Value, Is.EqualTo("Invalid email format."));
+        }
+
+        [Test]
+        public void Post_InvalidPassword_ReturnsBadRequest()
+        {
+            // Arrange
+            Users invalidPasswordUsers = new Users { Email = "validemail@example.com", Password = "short", UserName = "validusername" };
+
+            // Act
+            var actionResult = _controller.Post(invalidPasswordUsers);
+            var result = actionResult.Result as BadRequestObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.That(result.StatusCode, Is.EqualTo(400));
+            Assert.That(result.Value, Is.EqualTo("Password should be alphanumeric and at least 8 characters."));
+
+        }
+
+        [Test]
+        public void Post_UserDetailsAlreadyExist_ReturnsBadRequest()
+        {
+            // Arrange
+            Users existingUser = new Users { Email = "validemail@example.com", Password = "validpassword", UserName = "existinguser" };
+            _userServiceMock.Setup(x => x.ValidateUser(existingUser.Email, existingUser.UserName)).ReturnsAsync("invalidUser");
+
+            // Act
+            var actionResult = _controller.Post(existingUser);
+            var result = actionResult.Result as BadRequestObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.That(result.StatusCode, Is.EqualTo(400));
+            Assert.That(result.Value, Is.EqualTo("User details already exists."));
+        }
     }
 }
