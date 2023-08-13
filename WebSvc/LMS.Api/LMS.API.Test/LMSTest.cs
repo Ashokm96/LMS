@@ -6,12 +6,14 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LMS.API.Test
 {
+    [ExcludeFromCodeCoverage]
     public class LMSTest
     {
 
