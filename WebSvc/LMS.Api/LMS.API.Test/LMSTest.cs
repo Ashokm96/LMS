@@ -2,6 +2,7 @@
 using LMS.Api.Models;
 using LMS.Api.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,14 @@ namespace LMS.API.Test
     {
 
         private Mock<ILMSService> lmsServiceMock;
+        private Mock<ILogger<LMSController>> mockLogger;
         private LMSController lmsController;
 
         [SetUp]
         public void Setup()
         {
             lmsServiceMock = new Mock<ILMSService>();
+            mockLogger = new Mock<ILogger<LMSController>>();
             lmsController = new LMSController(lmsServiceMock.Object);
         }
 
@@ -71,6 +74,58 @@ namespace LMS.API.Test
             Assert.IsNotNull(result);
             Assert.That(result.StatusCode, Is.EqualTo(400));
             Assert.That(result.Value, Is.EqualTo("Unable to delete course."));
+        }
+
+        [Test]
+        public async Task Post_ValidCourse_ReturnsOkResult()
+        {
+            // Arrange
+            var validCourse = new Course { /* Initialize valid course properties */ };
+
+            lmsServiceMock.Setup(service => service.AddCourse(validCourse))
+                          .Returns(Task.CompletedTask);
+
+            // Act
+            var result = await lmsController.Post(validCourse);
+
+            // Assert
+            Assert.IsInstanceOf<OkObjectResult>(result);
+            var okResult = result as OkObjectResult;
+            Assert.That(okResult.Value, Is.EqualTo("Course Added."));
+        }
+
+        [Test]
+        public async Task Post_InvalidCourse_ReturnsBadRequest()
+        {
+            // Arrange
+            var invalidCourse = new Course { /* Initialize invalid course properties */ };
+            lmsController.ModelState.AddModelError("property", "error message");
+
+            // Act
+            var result = await lmsController.Post(invalidCourse);
+
+            // Assert
+            Assert.IsInstanceOf<BadRequestObjectResult>(result);
+            var badRequestResult = result as BadRequestObjectResult;
+            Assert.That(badRequestResult.Value, Is.EqualTo("Bad Request."));
+        }
+
+        [Test]
+        public async Task Post_LMSServiceThrowsException_ReturnsBadRequest()
+        {
+            // Arrange
+            var validCourse = new Course { /* Initialize valid course properties */ };
+
+            lmsServiceMock.Setup(service => service.AddCourse(validCourse))
+                          .Throws(new Exception("Sample exception message"));
+
+            // Act
+            var result = await lmsController.Post(validCourse);
+
+            // Assert
+            Assert.IsInstanceOf<BadRequestObjectResult>(result);
+            var badRequestResult = result as BadRequestObjectResult;
+            Assert.That(badRequestResult.Value, Is.EqualTo("Unable to add course."));
         }
     }
 }
