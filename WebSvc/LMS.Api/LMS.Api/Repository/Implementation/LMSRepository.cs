@@ -29,7 +29,7 @@ namespace LMS.Api.Repository.Implementation
         {
             try
             {
-                await dbContext.course.DeleteOneAsync(x => x.Name == courseName);
+                await dbContext.course.DeleteOneAsync(x => x.Technology == courseName);
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@ namespace LMS.Api.Repository.Implementation
         {
             try
             {
-                var course_filter = Builders<Course>.Filter.Eq(m => m.Name, course);
+                var course_filter = Builders<Course>.Filter.Eq(m => m.Technology, course);
                 return await dbContext.course.Find(course_filter).FirstOrDefaultAsync();
             }
             catch (Exception ex)
