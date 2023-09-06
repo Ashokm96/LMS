@@ -86,7 +86,7 @@ namespace LMS.Api.Controllers
             var token = userService.Authenticate(login.Username, login.Password);
             if (token == null)
             {
-                return StatusCode((int)HttpStatusCode.NotFound, "user details not found.");
+                return StatusCode((int)HttpStatusCode.Unauthorized, "Username/Password are incorrect.");
             }
             return StatusCode((int)HttpStatusCode.Created, new { Token = token });
         }
