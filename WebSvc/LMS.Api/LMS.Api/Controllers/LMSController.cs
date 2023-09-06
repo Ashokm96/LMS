@@ -96,7 +96,11 @@ namespace LMS.Api.Controllers
             {
                 try
                 {
-                    await lmsService.AddCourse(course);
+                    var result = await lmsService.AddCourse(course);
+                    if (result.CourseID == null)
+                    {
+                        return BadRequest("Unable to add course.");
+                    }
                     return Ok("Course Added.");
                 }
                 catch (Exception ex)
@@ -126,8 +130,12 @@ namespace LMS.Api.Controllers
                 {
                     return BadRequest("Course details not found!"); 
                 }
-                await lmsService.DeleteCourse(coursename);
-                return Ok("Course deleted Successfully");
+                var response = await lmsService.DeleteCourse(coursename);
+                if (response)
+                {
+                    return Ok("Course deleted Successfully");
+                }
+                return BadRequest("Unable to delete course.");
             }
             catch (Exception ex)
             {
