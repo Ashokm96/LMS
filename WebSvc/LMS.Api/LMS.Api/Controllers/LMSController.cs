@@ -71,6 +71,10 @@ namespace LMS.Api.Controllers
             try
             {
                 var res = await lmsService.GetCouseByDuration(technology,durationFromRange,durationToRange);
+                if (res == null)
+                {
+                    return BadRequest("No course details found.");
+                }
                 return Ok(res);
             }
             catch (Exception ex)
