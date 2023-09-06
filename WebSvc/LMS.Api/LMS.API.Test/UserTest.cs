@@ -36,12 +36,12 @@ namespace LMS.API.Test
             _userServiceMock.Setup(x => x.Authenticate(validLogin.Username, validLogin.Password)).Returns(expectedToken);
 
             // Act
-            var actionResult = _controller.Login(validLogin);
-            var result = actionResult.Result as OkObjectResult;
+            var actionResult = _controller.Login(validLogin) as ObjectResult;
+            //var result = actionResult.Result as OkObjectResult;
 
             // Assert
-            Assert.NotNull(result);
-            Assert.NotNull(result.Value);
+            Assert.NotNull(actionResult);
+            Assert.NotNull(actionResult.Value);
         }
 
         [Test]
@@ -52,13 +52,13 @@ namespace LMS.API.Test
             _userServiceMock.Setup(x => x.Authenticate(invalidLogin.Username, invalidLogin.Password)).Returns((string)null);
 
             // Act
-            var actionResult = _controller.Login(invalidLogin);
-            var result = actionResult.Result as BadRequestObjectResult;
+            var actionResult = _controller.Login(invalidLogin) as ObjectResult;
+            //var result = actionResult.Result as BadRequestObjectResult;
 
             // Assert
-            Assert.NotNull(result);
-            Assert.That(result.StatusCode, Is.EqualTo(400));
-            Assert.That(result.Value, Is.EqualTo("unauthorized user"));
+            Assert.NotNull(actionResult);
+            Assert.That(actionResult.StatusCode, Is.EqualTo(401));
+            Assert.That(actionResult.Value, Is.EqualTo("Username/Password are incorrect."));
         }
 
         [Test]
@@ -68,13 +68,14 @@ namespace LMS.API.Test
             Users nullUsers = null;
 
             // Act
-            var actionResult = _controller.Post(nullUsers);
-            var result = actionResult.Value as Result<string>;
+            var actionResult = _controller.Post(nullUsers) as ObjectResult;
+            //var result = actionResult.Value as Result<string>;
 
 
             // Assert
-            Assert.NotNull(result);
-            Assert.AreEqual("User details cannot be null.", result.ErrorMessage);
+            Assert.NotNull(actionResult);
+            Assert.AreEqual(400,actionResult.StatusCode);
+            Assert.AreEqual("User details cannot be null.", actionResult.Value);
         }
 
         [Test]
@@ -84,13 +85,13 @@ namespace LMS.API.Test
             Users invalidEmailUsers = new Users { Email = "invalidemail", Password = "validpassword", UserName = "validusername" };
 
             // Act
-            var actionResult = _controller.Post(invalidEmailUsers);
-            var result = actionResult.Result as BadRequestObjectResult;
+            var actionResult = _controller.Post(invalidEmailUsers) as ObjectResult;
+            //var result = actionResult.Result as BadRequestObjectResult;
 
             // Assert
-            Assert.NotNull(result);
-            Assert.That(result.StatusCode, Is.EqualTo(400));
-            Assert.That(result.Value, Is.EqualTo("Invalid email format."));
+            Assert.NotNull(actionResult);
+            Assert.That(actionResult.StatusCode, Is.EqualTo(400));
+            Assert.That(actionResult.Value, Is.EqualTo("Invalid email format."));
         }
 
         [Test]
@@ -100,13 +101,13 @@ namespace LMS.API.Test
             Users invalidPasswordUsers = new Users { Email = "validemail@example.com", Password = "short", UserName = "validusername" };
 
             // Act
-            var actionResult = _controller.Post(invalidPasswordUsers);
-            var result = actionResult.Result as BadRequestObjectResult;
+            var actionResult = _controller.Post(invalidPasswordUsers) as ObjectResult;
+            //var result = actionResult.Result as BadRequestObjectResult;
 
             // Assert
-            Assert.NotNull(result);
-            Assert.That(result.StatusCode, Is.EqualTo(400));
-            Assert.That(result.Value, Is.EqualTo("Password should be alphanumeric and at least 8 characters."));
+            Assert.NotNull(actionResult);
+            Assert.That(actionResult.StatusCode, Is.EqualTo(400));
+            Assert.That(actionResult.Value, Is.EqualTo("Password should be alphanumeric and at least 8 characters."));
 
         }
 
@@ -118,13 +119,13 @@ namespace LMS.API.Test
             _userServiceMock.Setup(x => x.ValidateUser(existingUser.Email, existingUser.UserName)).ReturnsAsync("invalidUser");
 
             // Act
-            var actionResult = _controller.Post(existingUser);
-            var result = actionResult.Result as BadRequestObjectResult;
+            var actionResult = _controller.Post(existingUser) as ObjectResult;
+            //var result = actionResult.Result as BadRequestObjectResult;
 
             // Assert
-            Assert.NotNull(result);
-            Assert.That(result.StatusCode, Is.EqualTo(400));
-            Assert.That(result.Value, Is.EqualTo("User details already exists."));
+            Assert.NotNull(actionResult);
+            Assert.That(actionResult.StatusCode, Is.EqualTo(409));
+            Assert.That(actionResult.Value, Is.EqualTo("User details already exists."));
         }
     }
 }
