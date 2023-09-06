@@ -13,27 +13,35 @@ namespace LMS.Api.Repository.Implementation
         {
             dbContext = _dbContext;
         }
-        public async Task AddCourse(Course course)
+        public async Task<Course> AddCourse(Course course)
         {
             try
             {
                 await dbContext.course.InsertOneAsync(course);
+                return course;
             }
             catch (Exception ex)
             {
                 logger.Error($"An error occurred in add course: {ex}");
+                return course;
             }
         }
 
-        public async Task DeleteCourse(string courseName)
+        public async Task<Boolean> DeleteCourse(string courseName)
         {
             try
             {
-                await dbContext.course.DeleteOneAsync(x => x.Technology == courseName);
+               var res = await dbContext.course.DeleteOneAsync(x => x.Technology == courseName);
+               if (res.DeletedCount>0 && res.IsAcknowledged)
+               {
+                    return true;
+               }
+               return false;
             }
             catch (Exception ex)
             {
                 logger.Error($"An error occurred in delete course: {ex}");
+                return false;
             }
         }
 

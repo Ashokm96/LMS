@@ -4,11 +4,11 @@ namespace LMS.Api.Services.Contract
 {
     public interface ILMSService
     {
-        Task AddCourse(Course course);
+        Task<Course> AddCourse(Course course);
         Task<List<Course>> GetAllCourses();
         Task<Course> GetCourse(string course);
         Task<List<Course>> GetCouseByDuration(string course, int durationFromRange, int durationToRange);
-        Task DeleteCourse(string courseName);
+        Task<Boolean> DeleteCourse(string courseName);
 
     }
 }

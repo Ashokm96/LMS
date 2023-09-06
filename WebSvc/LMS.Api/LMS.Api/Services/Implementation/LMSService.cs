@@ -12,14 +12,14 @@ namespace LMS.Api.Services.Implementation
         {
             this.lmsRepository = _lmsRepository;
         }
-        public async Task AddCourse(Course course)
+        public async Task<Course> AddCourse(Course course)
         {
-            await lmsRepository.AddCourse(course);
+           return await lmsRepository.AddCourse(course);
         }
 
-        public async Task DeleteCourse(string courseName)
+        public async Task<Boolean> DeleteCourse(string courseName)
         {
-            await lmsRepository.DeleteCourse(courseName);
+           return await lmsRepository.DeleteCourse(courseName);
         }
 
         public async Task<List<Course>> GetAllCourses()
