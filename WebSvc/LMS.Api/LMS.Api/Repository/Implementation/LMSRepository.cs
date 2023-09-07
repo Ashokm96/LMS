@@ -86,7 +86,7 @@ namespace LMS.Api.Repository.Implementation
             catch (Exception ex)
             {
                 logger.Error($"An error occurred in get couse by duration: {ex}");
-                return null;
+                return new List<Course>();
             }
             
         }

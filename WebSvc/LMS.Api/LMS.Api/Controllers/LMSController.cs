@@ -72,7 +72,7 @@ namespace LMS.Api.Controllers
             try
             {
                 var res = await lmsService.GetCouseByDuration(technology,durationFromRange,durationToRange);
-                if (res == null)
+                if (res.Count()==0)
                 {
                     return StatusCode((int)HttpStatusCode.NotFound, "No course details found.");
                 }
