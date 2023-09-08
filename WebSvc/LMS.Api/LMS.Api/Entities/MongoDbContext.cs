@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LMS.Api.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class MongoDbContext : IMongoDbContext
     {
         private readonly IMongoDatabase _database;

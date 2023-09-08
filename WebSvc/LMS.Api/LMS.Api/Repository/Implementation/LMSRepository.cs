@@ -2,9 +2,11 @@
 using LMS.Api.Models;
 using LMS.Api.Repository.Interface;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LMS.Api.Repository.Implementation
 {
+    [ExcludeFromCodeCoverage]
     public class LMSRepository : ILMSRepository
     {
         static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(LMSRepository));

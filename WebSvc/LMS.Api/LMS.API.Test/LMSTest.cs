@@ -146,6 +146,150 @@ namespace LMS.API.Test
             Assert.AreEqual("Unable to get course.", result.Value);
         }
 
+
+        [Test]
+        public async Task Get_SuccessfulRequest_ReturnsOk()
+        {
+            // Arrange
+            // Mock the response from your service
+            Course course = new Course()
+            {
+                CourseID = "1",
+                Description = "",
+                Duration = 1,
+                LaunchUrl = "www.microsoft.com",
+                Name = "c#",
+                Technology = ".net"
+            };
+            List<Course> listOfCourses = new List<Course> { course };
+            lmsServiceMock.Setup(x => x.GetAllCourses()).ReturnsAsync(listOfCourses);
+
+            // Act
+            var result = await lmsController.Get() as ObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result); 
+            Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
+            Assert.AreEqual(listOfCourses, result.Value);
+        }
+
+        [Test]
+        public async Task Get_ExceptionThrown_ReturnsConflict()
+        {
+            // Arrange
+            // Mock the service to throw an exception
+            lmsServiceMock.Setup(x => x.GetAllCourses()).ThrowsAsync(new Exception("Some error message"));
+
+            // Act
+            var result = await lmsController.Get() as ObjectResult;
+
+            // Assert
+            //Assert.IsInstanceOf<ConflictObjectResult>(result);
+            //var conflictResult = result as ConflictObjectResult;
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual("Unable to get courses.", result.Value);
+        }
+
+        [Test]
+        public async Task Post_ValidCourse_ReturnsCreated()
+        {
+            // Arrange
+            var course = new Course
+            {
+                Description = "",
+                Duration = 1,
+                LaunchUrl = "www.microsoft.com",
+                Name = "c#",
+                Technology = ".net"
+            };
+            // Mock the response from your service
+            var expectedResult = new Course
+            {
+                CourseID = "1",
+                Description = "",
+                Duration = 1,
+                LaunchUrl = "www.microsoft.com",
+                Name = "c#",
+                Technology = ".net"
+            };
+            lmsServiceMock.Setup(x => x.AddCourse(course)).ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await lmsController.Post(course) as ObjectResult;
+
+            // Assert
+            Assert.AreEqual((int)HttpStatusCode.Created, result.StatusCode);
+            Assert.AreEqual("Course Added.", result.Value);
+        }
+
+        [Test]
+        public async Task Post_AddCourseFailed_ReturnsConflict()
+        {
+            // Arrange
+            var course = new Course
+            {
+                Description = "",
+                Duration = 1,
+                LaunchUrl = "www.microsoft.com",
+                Name = "c#",
+                Technology = ".net"
+            };
+            // Mock the service to return a result with a null CourseID, indicating failure
+            var expectedResult = new Course
+            {
+                CourseID = null,
+                Description = "",
+                Duration = 1,
+                LaunchUrl = "www.microsoft.com",
+                Name = "c#",
+                Technology = ".net"
+            };
+            lmsServiceMock.Setup(x => x.AddCourse(course)).ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await lmsController.Post(course) as ObjectResult;
+
+            // Assert
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual("Unable to add course.", result.Value);
+        }
+
+        [Test]
+        public async Task Post_InvalidModel_ReturnsInternalServerError()
+        {
+            // Arrange
+            // Create an invalid model (e.g., missing required fields) that would fail ModelState.IsValid
+            var invalidCourse = new Course();
+            lmsController.ModelState.AddModelError("PropertyName", "Error message"); // Add model errors as needed
+
+            // Act
+            var result = await lmsController.Post(invalidCourse) as ObjectResult;
+
+            // Assert
+            Assert.AreEqual((int)HttpStatusCode.InternalServerError, result.StatusCode);
+            Assert.AreEqual("An error occured. contact your system administrator.", result.Value);
+        }
+
+        [Test]
+        public async Task Post_ExceptionThrown_ReturnsConflict()
+        {
+            // Arrange
+            var course = new Course
+            {
+                // Initialize course properties
+            };
+
+            // Mock the service to throw an exception
+            lmsServiceMock.Setup(x => x.AddCourse(course)).ThrowsAsync(new Exception("Some error message"));
+
+            // Act
+            var result = await lmsController.Post(course) as ObjectResult;
+
+            // Assert
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual("Unable to add course.", result.Value);
+        }
+
         //[Test]
         //public async Task Post_ValidCourse_ReturnsOkResult()
         //{
