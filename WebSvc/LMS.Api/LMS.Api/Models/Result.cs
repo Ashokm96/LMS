@@ -1,5 +1,8 @@
-﻿namespace LMS.Api.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace LMS.Api.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Result<T>
     {
         public T Data { get; set; }
