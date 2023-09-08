@@ -17,7 +17,6 @@ namespace LMS.API.Test
     [ExcludeFromCodeCoverage]
     public class LMSTest
     {
-
         private Mock<ILMSService> lmsServiceMock;
         private Mock<ILogger<LMSController>> mockLogger;
         private LMSController lmsController;
@@ -61,7 +60,6 @@ namespace LMS.API.Test
             Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
             Assert.AreEqual("Unable to delete course.", result.Value);
         }
-
 
         [Test]
         public async Task DeleteByCouseName_ExceptionThrown_ReturnsInternalServerError()
@@ -146,7 +144,6 @@ namespace LMS.API.Test
             Assert.AreEqual("Unable to get course.", result.Value);
         }
 
-
         [Test]
         public async Task Get_SuccessfulRequest_ReturnsOk()
         {
@@ -184,8 +181,6 @@ namespace LMS.API.Test
             var result = await lmsController.Get() as ObjectResult;
 
             // Assert
-            //Assert.IsInstanceOf<ConflictObjectResult>(result);
-            //var conflictResult = result as ConflictObjectResult;
             Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
             Assert.AreEqual("Unable to get courses.", result.Value);
         }
@@ -290,168 +285,5 @@ namespace LMS.API.Test
             Assert.AreEqual("Unable to add course.", result.Value);
         }
 
-        //[Test]
-        //public async Task Post_ValidCourse_ReturnsOkResult()
-        //{
-        //    // Arrange
-        //    var validCourse = new Course { /* Initialize valid course properties */ };
-
-        //    lmsServiceMock.Setup(service => service.AddCourse(validCourse))
-        //                  .Returns(Task.CompletedTask);
-
-        //    // Act
-        //    var result = await lmsController.Post(validCourse);
-
-        //    // Assert
-        //    Assert.IsInstanceOf<OkObjectResult>(result);
-        //    var okResult = result as OkObjectResult;
-        //    Assert.That(okResult.Value, Is.EqualTo("Course Added."));
-        //}
-
-        //    [Test]
-        //public async Task Post_InvalidCourse_ReturnsBadRequest()
-        //{
-        //    // Arrange
-        //    var invalidCourse = new Course { /* Initialize invalid course properties */ };
-        //    lmsController.ModelState.AddModelError("property", "error message");
-
-        //    // Act
-        //    var result = await lmsController.Post(invalidCourse);
-
-        //    // Assert
-        //    Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        //    var badRequestResult = result as BadRequestObjectResult;
-        //    Assert.That(badRequestResult.Value, Is.EqualTo("Bad Request."));
-        //}
-
-        //[Test]
-        //public async Task Post_LMSServiceThrowsException_ReturnsBadRequest()
-        //{
-        //    // Arrange
-        //    var validCourse = new Course { /* Initialize valid course properties */ };
-
-        //    lmsServiceMock.Setup(service => service.AddCourse(validCourse))
-        //                  .Throws(new Exception("Sample exception message"));
-
-        //    // Act
-        //    var result = await lmsController.Post(validCourse);
-
-        //    // Assert
-        //    Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        //    var badRequestResult = result as BadRequestObjectResult;
-        //    Assert.That(badRequestResult.Value, Is.EqualTo("Unable to add course."));
-        //}
-
-        //[Test]
-        //public async Task GetCouseByDuration_ValidInput_ReturnsOkResult()
-        //{
-        //    // Arrange
-        //    var technology = "SampleTechnology";
-        //    var durationFromRange = 5;
-        //    var durationToRange = 10;
-        //    var expectedCourses = new List<Course> { /* Initialize expected course objects */ };
-
-        //    lmsServiceMock.Setup(service => service.GetCouseByDuration(technology, durationFromRange, durationToRange))
-        //                  .ReturnsAsync(expectedCourses);
-
-        //    // Act
-        //    var result = await lmsController.GetCouseByDuration(technology, durationFromRange, durationToRange);
-
-        //    // Assert
-        //    Assert.IsInstanceOf<OkObjectResult>(result);
-        //    var okResult = result as OkObjectResult;
-        //    Assert.That(okResult.Value, Is.EqualTo(expectedCourses));
-        //}
-
-        //[Test]
-        //public async Task GetCouseByDuration_ServiceThrowsException_ReturnsBadRequest()
-        //{
-        //    // Arrange
-        //    var technology = "SampleTechnology";
-        //    var durationFromRange = 5;
-        //    var durationToRange = 10;
-
-        //    lmsServiceMock.Setup(service => service.GetCouseByDuration(technology, durationFromRange, durationToRange))
-        //                  .Throws(new Exception("Sample exception message"));
-
-        //    // Act
-        //    var result = await lmsController.GetCouseByDuration(technology, durationFromRange, durationToRange);
-
-        //    // Assert
-        //    Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        //    var badRequestResult = result as BadRequestObjectResult;
-        //    Assert.That(badRequestResult.Value, Is.EqualTo("Unable to get course."));
-        //}
-
-        //[Test]
-        //public async Task GetByCouseName_ValidTechnology_ReturnsOkResult()
-        //{
-        //    // Arrange
-        //    var technology = "SampleTechnology";
-        //    var expectedCourse = new Course { /* Initialize expected course object */ };
-
-        //    lmsServiceMock.Setup(service => service.GetCourse(technology))
-        //                  .ReturnsAsync(expectedCourse);
-
-        //    // Act
-        //    var result = await lmsController.GetByCouseName(technology);
-
-        //    // Assert
-        //    Assert.IsInstanceOf<OkObjectResult>(result);
-        //    var okResult = result as OkObjectResult;
-        //    Assert.That(okResult.Value, Is.EqualTo(expectedCourse));
-        //}
-
-        //[Test]
-        //public async Task GetByCouseName_ServiceThrowsException_ReturnsBadRequest()
-        //{
-        //    // Arrange
-        //    var technology = "SampleTechnology";
-
-        //    lmsServiceMock.Setup(service => service.GetCourse(technology))
-        //                  .Throws(new Exception("Sample exception message"));
-
-        //    // Act
-        //    var result = await lmsController.GetByCouseName(technology);
-
-        //    // Assert
-        //    Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        //    var badRequestResult = result as BadRequestObjectResult;
-        //    Assert.That(badRequestResult.Value, Is.EqualTo("Unable to get course."));
-        //}
-
-        //[Test]
-        //public async Task Get_ValidRequest_ReturnsOkResult()
-        //{
-        //    // Arrange
-        //    var expectedCourses = new List<Course> { /* Initialize expected course objects */ };
-
-        //    lmsServiceMock.Setup(service => service.GetAllCourses())
-        //                  .ReturnsAsync(expectedCourses);
-
-        //    // Act
-        //    var result = await lmsController.Get();
-
-        //    // Assert
-        //    Assert.IsInstanceOf<OkObjectResult>(result);
-        //    var okResult = result as OkObjectResult;
-        //    Assert.That(okResult.Value, Is.EqualTo(expectedCourses));
-        //}
-
-        //[Test]
-        //public async Task Get_ServiceThrowsException_ReturnsBadRequest()
-        //{
-        //    // Arrange
-        //    lmsServiceMock.Setup(service => service.GetAllCourses())
-        //                  .Throws(new Exception("Sample exception message"));
-
-        //    // Act
-        //    var result = await lmsController.Get();
-
-        //    // Assert
-        //    Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        //    var badRequestResult = result as BadRequestObjectResult;
-        //    Assert.That(badRequestResult.Value, Is.EqualTo("Unable to get all course."));
-        //}
     }
 }
