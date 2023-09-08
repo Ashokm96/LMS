@@ -3,9 +3,11 @@ using LMS.Api.Entities;
 using LMS.Api.Models;
 using LMS.Api.Repository.Interface;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LMS.Api.Repository.Implementation
 {
+    [ExcludeFromCodeCoverage]
     public class UserRepository : IUserRepository
     {
         static readonly log4net.ILog logger = log4net.LogManager.GetLogger(typeof(UserRepository));

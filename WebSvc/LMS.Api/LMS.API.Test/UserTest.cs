@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -126,6 +127,74 @@ namespace LMS.API.Test
             Assert.NotNull(actionResult);
             Assert.That(actionResult.StatusCode, Is.EqualTo(409));
             Assert.That(actionResult.Value, Is.EqualTo("User details already exists."));
+        }
+
+        [Test]
+        public void Post_ErrorFromUserService_ReturnsInternalServerError()
+        {
+            // Arrange
+            var userWithValidInput = new Users
+            {
+                Email = "user@example.com",
+                Password = "validpassword", // Ensure this meets your password validation criteria
+                UserName = "ValidUser"
+            };
+
+            _userServiceMock.Setup(x => x.ValidateUser(userWithValidInput.Email, userWithValidInput.UserName)).ReturnsAsync("error");
+
+            // Act
+            var result = _controller.Post(userWithValidInput) as ObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual((int)HttpStatusCode.InternalServerError, result.StatusCode);
+            Assert.AreEqual("An error occured. contact your system administrator.", result.Value);
+        }
+
+        [Test]
+        public void Post_ValidInput_FailedToRegister()
+        {
+            // Arrange
+            var validUser = new Users
+            {
+                Email = "user@example.com",
+                Password = "validpassword", // Ensure this meets your password validation criteria
+                UserName = "ValidUser"
+            };
+
+            _userServiceMock.Setup(x => x.ValidateUser(validUser.Email, validUser.UserName)).ReturnsAsync("validUser");
+
+            // Act
+            var result = _controller.Post(validUser) as ObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual("Failed to register", result.Value);
+        }
+
+        [Test]
+        public void Post_ValidInput_ReturnsCreated()
+        {
+            // Arrange
+            var validUser = new Users
+            {
+                UserID="1",
+                Email = "user@example.com",
+                Password = "validpassword", 
+                UserName = "ValidUser"
+            };
+
+            _userServiceMock.Setup(x => x.ValidateUser(validUser.Email, validUser.UserName)).ReturnsAsync("validUser");
+            _userServiceMock.Setup(x => x.Register(validUser)).ReturnsAsync(validUser.UserID);
+
+            // Act
+            var result = _controller.Post(validUser) as ObjectResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual((int)HttpStatusCode.Created, result.StatusCode);
+            Assert.AreEqual("Registered succefully", result.Value);
         }
     }
 }
