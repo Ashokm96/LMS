@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { login } from '../models/login';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   public login(loginCredntials:login) :Observable<any> {
-    let url: string = "";
+    let url: string = environment.endpoints.apiBaseURL + environment.endpoints.login;
     return this.http.post(url,loginCredntials);
   }
 

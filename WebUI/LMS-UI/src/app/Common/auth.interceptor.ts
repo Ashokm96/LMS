@@ -9,14 +9,15 @@ import {
 import { Observable, catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from './toast.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private authservice: AuthService,
-    private router: Router
-   // private toastr: ToastService
+    private router: Router,
+    private toastr: ToastService
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -34,21 +35,21 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 400) {
-            //this.toastr.showError(err.error.message);
+            this.toastr.showError(err.error.message);
           }
           if (err.status === 403) {
-            //this.toastr.showError("You are not authorize to access this page.")
+            this.toastr.showError("You are not authorize to access this page.")
           }
           if (err.status === 401) {
-            //this.toastr.showError("Session expire");
+            this.toastr.showError("Session expire");
             this.authservice.logout();
             this.router.navigate(['/login']);
           }
           if (err.status === 500) {
-            //this.toastr.showError("Internal Server Error.");
+            this.toastr.showError("Internal Server Error.");
           }
           if (err.status === 0) {
-            //this.toastr.showError("Server is down, Try again later !");
+            this.toastr.showError("Server is down, Try again later !");
           }
         }
         return throwError(err);
