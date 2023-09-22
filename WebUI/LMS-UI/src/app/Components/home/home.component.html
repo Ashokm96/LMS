@@ -8,7 +8,7 @@
 
 <div class="table-container">
   <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="filterCourses()" />
-  <button (click)="addCourse()">Add Course</button>
+  <button (click)="addCourse()" *ngIf="isAdmin">Add Course</button>
 
   <table>
     <thead>
@@ -18,7 +18,7 @@
         <th>Technology</th>
         <th>Duration(Min)</th>
         <th>Launch URL</th>
-        <th>Actions</th>
+        <th *ngIf="isAdmin">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -28,7 +28,7 @@
         <td>{{ course.technology }}</td>
         <td>{{ course.duration }}</td>
         <td><a [href]="course.launchUrl" target="_blank">{{ course.launchUrl }}</a></td>
-        <td><button (click)="deleteCourse(course)">Delete</button></td>
+        <td *ngIf="isAdmin"><button (click)="deleteCourse(course)">Delete</button></td>
       </tr>
     </tbody>
   </table>
