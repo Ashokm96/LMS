@@ -11,13 +11,15 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { HomeComponent } from './Components/home/home.component';
 import { AuthInterceptor } from './Common/auth.interceptor';
+import { RegistrationComponent } from './Components/registration/registration.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
