@@ -1,1 +1,35 @@
-<p>home works!</p>
+<div class="header">
+  <div>
+    <label style="font-size:35px">LMS</label><br />
+    <label>Learning Management System</label>
+  </div>
+  <button (click)="logout()">Log Out</button>
+</div>
+
+<div class="table-container">
+  <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="filterCourses()" />
+  <button (click)="addCourse()">Add Course</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Course Name</th>
+        <th>Description</th>
+        <th>Technology</th>
+        <th>Duration(Min)</th>
+        <th>Launch URL</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let course of filteredCourses">
+        <td>{{ course.name }}</td>
+        <td>{{ course.description }}</td>
+        <td>{{ course.technology }}</td>
+        <td>{{ course.duration }}</td>
+        <td><a [href]="course.launchUrl" target="_blank">{{ course.launchUrl }}</a></td>
+        <td><button (click)="deleteCourse(course)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

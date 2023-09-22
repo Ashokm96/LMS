@@ -8,7 +8,8 @@ import { RegistrationComponent } from './Components/registration/registration.co
 const routes: Routes = [
   {path:'login',component:LoginComponent},
   { path: ' ', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard], data: {'role':'Admin'} },
+  //{ path: 'home', component: HomeComponent, canActivate: [AuthGuard], data: {'role':'Admin'} },
+  { path: 'home', component: HomeComponent },
   { path: 'register', component: RegistrationComponent }
 ];
 
