@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastService } from '../../Common/toast.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -35,7 +37,7 @@ export class HomeComponent {
   searchQuery = '';
   filteredCourses: any[] = [];
   isAdmin !: boolean;
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router, private toast: ToastService) { }
 
   ngOnInit(): void {
     // Initialize filteredCourses with all courses
@@ -54,8 +56,11 @@ export class HomeComponent {
   }
 
   logout() {
-    // Implement the logout functionality
-    // You can navigate to the login page or clear user session
+    this.toast.showLoader();
+    this.authService.logout();
+    this.router.navigate(["login"]);
+    this.toast.showSuccess('Logout Successfully');
+    this.toast.stopLoader();
   }
 
   // Implement a filter function for search
