@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -33,10 +34,13 @@ export class HomeComponent {
 
   searchQuery = '';
   filteredCourses: any[] = [];
+  isAdmin !: boolean;
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     // Initialize filteredCourses with all courses
     this.filteredCourses = [...this.courses];
+    this.isAdmin = this.authService.isAdmin();
   }
 
   addCourse() {
@@ -66,6 +70,7 @@ export class HomeComponent {
   //  });
   //}
   filterCourses() {
+    console.log(this.isAdmin);
     this.filteredCourses = this.courses.filter((course) => {
       const searchQuery = this.searchQuery.toLowerCase();
 
