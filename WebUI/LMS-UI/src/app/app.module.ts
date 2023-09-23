@@ -12,6 +12,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { HomeComponent } from './Components/home/home.component';
 import { AuthInterceptor } from './Common/auth.interceptor';
 import { RegistrationComponent } from './Components/registration/registration.component';
+import { AddCoursePopupComponent } from './dialogues/add-course-popup/add-course-popup.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { RegistrationComponent } from './Components/registration/registration.co
     AppComponent,
     LoginComponent,
     HomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    AddCoursePopupComponent
   ],
   imports: [
     BrowserModule,
