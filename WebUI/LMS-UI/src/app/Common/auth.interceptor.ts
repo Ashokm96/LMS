@@ -41,7 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
             this.toastr.showError("You are not authorize to access this page.")
           }
           if (err.status === 401) {
-            this.toastr.showError("Session expire");
+            this.toastr.showError("Session expired");
             this.authservice.logout();
             this.router.navigate(['/login']);
           }
