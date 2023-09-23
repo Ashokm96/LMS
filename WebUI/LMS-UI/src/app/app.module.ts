@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { MatDialogModule } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Components/login/login.component';
@@ -31,7 +31,8 @@ import { AddCoursePopupComponent } from './dialogues/add-course-popup/add-course
     HttpClientModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(),
-    NgxUiLoaderModule
+    NgxUiLoaderModule,
+    MatDialogModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS,useClass : AuthInterceptor,multi:true }],
   bootstrap: [AppComponent]

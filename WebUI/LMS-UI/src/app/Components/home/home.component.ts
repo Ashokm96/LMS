@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastService } from '../../Common/toast.service';
+import { AddCoursePopupComponent } from '../../dialogues/add-course-popup/add-course-popup.component';
 import { course } from '../../models/course';
 import { AuthService } from '../../services/auth.service';
 import { CourseService } from '../../services/course.service';
@@ -40,7 +42,7 @@ export class HomeComponent {
   filteredCourses: any[] = [];
   isAdmin !: boolean;
   courses!: course[];
-  constructor(private authService: AuthService, private router: Router, private toast: ToastService,private courseService:CourseService) { }
+  constructor(private authService: AuthService, private router: Router, private toast: ToastService,private courseService:CourseService,private dialog:MatDialog) { }
 
   ngOnInit(): void {
     // Initialize filteredCourses with all courses
@@ -61,6 +63,14 @@ export class HomeComponent {
         this.toast.stopLoader();
         this.toast.showError(error.error.message);
       });
+  }
+
+  openAddCourseDialog() {
+    const dialogRef = this.dialog.open(AddCoursePopupComponent, {
+      width:'500px'
+    });
+
+    dialogRef.afterClosed().subscribe();
   }
 
   addCourse() {

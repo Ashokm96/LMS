@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-course-popup',
@@ -6,29 +7,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./add-course-popup.component.scss']
 })
 export class AddCoursePopupComponent {
-  @Input() showPopup!: boolean;
-  @Output() addCourse = new EventEmitter<any>();
+  project: any = {}; 
 
-  newCourse = {
-    name: '',
-    description: '',
-    technology: '',
-    duration: 0,
-    launchUrl: ''
-  };
+  constructor(public dialogRef : MatDialogRef<AddCoursePopupComponent>,private dialog:MatDialog) { }
 
-  addNewCourse() {
-    // Emit an event to add the new course
-    this.addCourse.emit(this.newCourse);
+  onSubmit() {
+    // You can perform actions with the submitted data here
+    console.log('Form submitted with data:', this.project);
 
-    // Reset the form and hide the popup
-    this.newCourse = {
-      name: '',
-      description: '',
-      technology: '',
-      duration: 0,
-      launchUrl: ''
-    };
-    this.showPopup = false;
+    // Reset the form after submission (optional)
+    this.project = {};
   }
 }
