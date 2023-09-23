@@ -37,3 +37,25 @@ $LMS-UI-theme: mat.define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* Style for success toast message */
+.toast-success {
+  background-color: #90EE90; /* Green background for success */
+  /*color: #fff;*/ 
+}
+
+/* Style for error toast message */
+.toast-error {
+  background-color: #FFCCCB; /* Red background for error */
+  /*color: #fff;*/ 
+}
+
+/*.toast-top {*/
+  /*bottom: 200px;*/
+  /*margin: 0 0 200% 0;
+  right: 100%;
+  left: 100%;
+  width: 100%;
+}*/
+
