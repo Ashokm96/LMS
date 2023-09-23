@@ -10,11 +10,11 @@ export class ToastService {
   constructor(private toast: ToastrService, private ngxService: NgxUiLoaderService) { }
 
   showSuccess(msg: any) {
-    this.toast.success(msg, 'Success');
+    this.toast.success(msg);
   }
 
   showError(msg: any) {
-    this.toast.error(msg, 'Error', { timeOut: 10000 });
+    this.toast.error(msg);
   }
 
   showLoader() {
