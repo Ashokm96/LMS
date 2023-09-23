@@ -1,21 +1,26 @@
-<div class="popup" [hidden]="!showPopup">
+<div class="form-container">
   <h2>Add Course</h2>
-  <form (submit)="addNewCourse()">
-    <label for="name">Name:</label>
-    <input type="text" id="name" [(ngModel)]="newCourse.name" required>
-
-    <label for="description">Description:</label>
-    <input type="text" id="description" [(ngModel)]="newCourse.description" required>
-
-    <label for="technology">Technology:</label>
-    <input type="text" id="technology" [(ngModel)]="newCourse.technology" required>
-
-    <label for="duration">Duration(Min):</label>
-    <input type="number" id="duration" [(ngModel)]="newCourse.duration" required>
-
-    <label for="launchUrl">Launch URL:</label>
-    <input type="text" id="launchUrl" [(ngModel)]="newCourse.launchUrl" required>
-
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Course Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="project.name" required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" [(ngModel)]="project.description" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="technology">Technology:</label>
+      <input type="text" id="technology" name="technology" [(ngModel)]="project.technology" required>
+    </div>
+    <div class="form-group">
+      <label for="duration">Duration:</label>
+      <input type="text" id="duration" name="duration" [(ngModel)]="project.duration" required>
+    </div>
+    <div class="form-group">
+      <label for="launchUrl">Launch URL:</label>
+      <input type="url" id="launchUrl" name="launchUrl" [(ngModel)]="project.launchUrl" required>
+    </div>
     <button type="submit">Add</button>
   </form>
 </div>

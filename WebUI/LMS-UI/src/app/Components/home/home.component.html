@@ -8,7 +8,7 @@
 
 <div class="table-container">
   <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="filterCourses()" />
-  <button (click)="addCourse()" *ngIf="isAdmin">Add Course</button>
+  <button (click)="openAddCourseDialog()" *ngIf="isAdmin">Add Course</button>
 
   <table>
     <thead>
