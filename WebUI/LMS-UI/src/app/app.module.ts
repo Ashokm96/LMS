@@ -32,7 +32,9 @@ import { DeleteCoursePopupComponent } from './dialogues/delete-course-popup/dele
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      //closeButton: true
+    }),
     NgxUiLoaderModule,
     MatDialogModule
   ],
