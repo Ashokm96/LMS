@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastService } from '../../Common/toast.service';
 import { AddCoursePopupComponent } from '../../dialogues/add-course-popup/add-course-popup.component';
+import { DeleteCoursePopupComponent } from '../../dialogues/delete-course-popup/delete-course-popup.component';
 import { course } from '../../models/course';
 import { AuthService } from '../../services/auth.service';
 import { CourseService } from '../../services/course.service';
@@ -68,6 +69,15 @@ export class HomeComponent {
   openAddCourseDialog() {
     const dialogRef = this.dialog.open(AddCoursePopupComponent, {
       width:'500px'
+    });
+
+    dialogRef.afterClosed().subscribe();
+  }
+
+  openDeleteCourseDialog(course:course) {
+    const dialogRef = this.dialog.open(DeleteCoursePopupComponent, {
+      width: '300px',
+      data: { course }
     });
 
     dialogRef.afterClosed().subscribe();

@@ -28,7 +28,7 @@
         <td>{{ course.technology }}</td>
         <td>{{ course.duration }}</td>
         <td><a [href]="course.launchUrl" target="_blank">{{ course.launchUrl }}</a></td>
-        <td *ngIf="isAdmin"><button (click)="deleteCourse(course)">Delete</button></td>
+        <td *ngIf="isAdmin"><button (click)="openDeleteCourseDialog(course)">Delete</button></td>
       </tr>
     </tbody>
   </table>

@@ -13,6 +13,7 @@ import { HomeComponent } from './Components/home/home.component';
 import { AuthInterceptor } from './Common/auth.interceptor';
 import { RegistrationComponent } from './Components/registration/registration.component';
 import { AddCoursePopupComponent } from './dialogues/add-course-popup/add-course-popup.component';
+import { DeleteCoursePopupComponent } from './dialogues/delete-course-popup/delete-course-popup.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AddCoursePopupComponent } from './dialogues/add-course-popup/add-course
     LoginComponent,
     HomeComponent,
     RegistrationComponent,
-    AddCoursePopupComponent
+    AddCoursePopupComponent,
+    DeleteCoursePopupComponent
   ],
   imports: [
     BrowserModule,
