@@ -35,6 +35,12 @@ button {
   margin-right:15px;
 }
 
-/*button:hover {
-  background-color: #0056b3;
-}*/
+button:disabled {
+    opacity:0.5;
+    cursor:not-allowed;
+}
+
+.error-text{
+    color:red;
+}
+
