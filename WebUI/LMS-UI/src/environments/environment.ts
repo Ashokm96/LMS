@@ -9,6 +9,7 @@ export const environment = {
     apiBaseURL: 'https://localhost:44364/',
     login: 'api/v1.0/lms/user/login',
     getCourse: 'api/v1.0/lms/courses/getall',
+    addCourse: 'api/v1.0/lms/courses/add'
   }
 };
 

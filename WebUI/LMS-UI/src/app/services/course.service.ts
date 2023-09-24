@@ -17,4 +17,10 @@ export class CourseService {
     return this.http.get<course[]>(url);
   }
 
+  public addCourse(course:course): Observable<any> {
+    let url: string = environment.endpoints.apiBaseURL + environment.endpoints.addCourse;
+    return this.http.post<any>(url,course);
+  }
+
+
 }
