@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, EventEmitter, Output, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CourseService } from '../../services/course.service';
 
 @Component({
   selector: 'app-delete-course-popup',
@@ -8,11 +9,32 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 })
 export class DeleteCoursePopupComponent {
   @Output() confirmed = new EventEmitter<boolean>();
+  courseName: any;
+  constructor(public dialogRef: MatDialogRef<DeleteCoursePopupComponent>, private dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: any,public courseService:CourseService) { }
 
-  constructor(public dialogRef: MatDialogRef<DeleteCoursePopupComponent>, private dialog: MatDialog) { }
+  ngOnInit() {
+    this.courseName = this.data.tech;
+  }
 
   confirmDelete() {
-    this.confirmed.emit(true);
+    console.log(this.courseName);
+    this.deleteCourse(this.courseName)
+      .then(() => this.dialogRef.close(true))
+      .catch(error=>console.log(error));
+    //this.confirmed.emit(true);
+  }
+
+  deleteCourse(courseName:string) : Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.courseService.deleteCourse(courseName).subscribe({
+        next: response => {
+          console.log(response);
+        },
+        error: err => {
+          console.log(err);
+        }
+      });
+    });
   }
 
   cancelDelete() {

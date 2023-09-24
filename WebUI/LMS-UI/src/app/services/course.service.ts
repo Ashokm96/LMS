@@ -19,8 +19,15 @@ export class CourseService {
 
   public addCourse(course:course): Observable<any> {
     let url: string = environment.endpoints.apiBaseURL + environment.endpoints.addCourse;
-    return this.http.post<any>(url,course);
+    var returnValue = this.http.post<any>(url, course);
+    return returnValue;
   }
 
+  public deleteCourse(coursename: string): Observable<any> {
+    let url: string = environment.endpoints.apiBaseURL + environment.endpoints.deleteCourse;
+    url = url.replace('{coursename}',coursename.toString());
+    var returnValue = this.http.delete<any>(url);
+    return returnValue;
+  }
 
 }

@@ -59,13 +59,21 @@ export class HomeComponent {
     });
   }
 
-  openDeleteCourseDialog(course:course) {
+  openDeleteCourseDialog(course: course) {
+    var tech = course.technology;
     const dialogRef = this.dialog.open(DeleteCoursePopupComponent, {
       width: '300px',
-      data: { course }
+      data: { tech }
     });
 
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getCourse();
+      }
+      else {
+        this.toast.stopLoader();
+      }
+    });
   }
 
   logout() {
