@@ -49,7 +49,14 @@ export class HomeComponent {
       width:'500px'
     });
 
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getCourse();
+      }
+      else {
+        this.toast.stopLoader();
+      }
+    });
   }
 
   openDeleteCourseDialog(course:course) {
