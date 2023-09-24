@@ -14,6 +14,8 @@ import { CourseService } from '../../services/course.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  errorLabel!: boolean;
+  errorLabelMessage: any;
   searchQuery = '';
   filteredCourses: any[] = [];
   isAdmin !: boolean;
@@ -34,8 +36,11 @@ export class HomeComponent {
         this.toast.stopLoader();
       },
       (error) => {
+        this.errorLabel = true;
+        this.errorLabelMessage = error.message;
         this.toast.stopLoader();
         this.toast.showError(error.error.message);
+        console.log(error.message);
       });
   }
 
@@ -69,12 +74,12 @@ export class HomeComponent {
       const searchQuery = this.searchQuery.toLowerCase();
 
       // Convert duration to a string for comparison
-      const durationString = course.Duration.toString().toLowerCase();
+      const durationString = course.duration.toString().toLowerCase();
 
       return (
-        course.Name.toLowerCase().includes(searchQuery) ||
-        course.Description.toLowerCase().includes(searchQuery) ||
-        course.Technology.toLowerCase().includes(searchQuery) ||
+        course.name.toLowerCase().includes(searchQuery) ||
+        course.description.toLowerCase().includes(searchQuery) ||
+        course.technology.toLowerCase().includes(searchQuery) ||
         durationString.includes(searchQuery)
       );
     });
