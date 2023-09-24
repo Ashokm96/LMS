@@ -3,23 +3,23 @@
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Course Name:</label>
-      <input type="text" id="name" name="name" [(ngModel)]="project.name" required>
+      <input type="text" id="name" name="name" [(ngModel)]="course.name" required>
     </div>
     <div class="form-group">
       <label for="description">Description:</label>
-      <textarea id="description" name="description" [(ngModel)]="project.description" required></textarea>
+      <textarea id="description" name="description" [(ngModel)]="course.description" required></textarea>
     </div>
     <div class="form-group">
       <label for="technology">Technology:</label>
-      <input type="text" id="technology" name="technology" [(ngModel)]="project.technology" required>
+      <input type="text" id="technology" name="technology" [(ngModel)]="course.technology" required>
     </div>
     <div class="form-group">
       <label for="duration">Duration:</label>
-      <input type="text" id="duration" name="duration" [(ngModel)]="project.duration" required>
+      <input type="text" id="duration" name="duration" [(ngModel)]="course.duration" required>
     </div>
     <div class="form-group">
       <label for="launchUrl">Launch URL:</label>
-      <input type="url" id="launchUrl" name="launchUrl" [(ngModel)]="project.launchUrl" required>
+      <input type="url" id="launchUrl" name="launchUrl" [(ngModel)]="course.launchUrl" required>
     </div>
     <button type="submit">Add</button>
     <button [mat-dialog-close]="false">Cancel</button>

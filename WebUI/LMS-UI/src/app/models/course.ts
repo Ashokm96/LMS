@@ -1,8 +1,8 @@
 export interface course {
-  CourseID: string;
-  Name: string;
-  Description: string;
-  Duration: number;
-  Technology: string;
-  LaunchUrl: string;
+  courseID: string;
+  name: string;
+  description: string;
+  duration: number;
+  technology: string;
+  launchUrl: string;
 }

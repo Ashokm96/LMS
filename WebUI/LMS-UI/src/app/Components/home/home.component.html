@@ -1,3 +1,4 @@
+
 <div class="header">
   <div>
     <label style="font-size:35px">LMS</label><br />
@@ -5,7 +6,11 @@
   </div>
   <button routerLink="/login" (click)="logout()">Log Out</button>
 </div>
-
+<div class="toast-error">
+  <div>
+    <label>{{errorLabelMessage}}</label>
+  </div>
+</div>
 <div class="table-container">
   <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="filterCourses()" />
   <button (click)="openAddCourseDialog()" *ngIf="isAdmin">Add Course</button>
