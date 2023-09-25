@@ -68,12 +68,29 @@ export class HomeComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getCourse();
+        this.deleteCourse(tech);
       }
       else {
         this.toast.stopLoader();
       }
     });
+  }
+
+  deleteCourse(courseName: string) {
+    this.courseService.deleteCourse(courseName).subscribe(
+      (response) => {
+        this.errorLabel = true;
+        this.errorLabelMessage = response.message;
+        console.log(response.message);
+        console.log(response);
+        this.getCourse();
+      },
+      (error) => {
+        this.errorLabel = true;
+        this.errorLabelMessage = error.message;
+        this.toast.stopLoader();
+        console.log(error);
+      });
   }
 
   logout() {
