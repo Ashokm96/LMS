@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginUser).subscribe(
       (res) => {
         this.toast.stopLoader();
-        this.toast.showSuccess('Login Successful');
+        //this.toast.showSuccess('Login Successful');
 
 
 
