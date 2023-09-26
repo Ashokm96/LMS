@@ -13,7 +13,7 @@ import { CourseService } from '../../services/course.service';
 export class AddCoursePopupComponent {
   courseForm!: FormGroup;
   course: course = {} as course; 
-  
+  existingCourseName!: boolean;
   constructor(public dialogRef: MatDialogRef<AddCoursePopupComponent>, private dialog: MatDialog, private fb: FormBuilder,
     private courseService: CourseService, private toastService: ToastService, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
@@ -38,16 +38,44 @@ export class AddCoursePopupComponent {
     return null;
   }
 
+  emptyError(){
+    this.existingCourseName = false;
+  }
+
   onSave() {
+    this.existingCourseName = false;
       this.course.name = this.courseForm.get('name')?.value;
       this.course.technology = this.courseForm.get('technology')?.value;
       this.course.description = this.courseForm.get('description')?.value;
       this.course.duration = this.courseForm.get('duration')?.value;
       this.course.launchUrl = this.courseForm.get('launchUrl')?.value;
-      this.toastService.showLoader();
-      this.addCourse(this.course)
-        .then(()=>this.dialogRef.close(true))
-        .catch(error=>console.log(error));
+    this.toastService.showLoader();
+
+    this.courseService.getCourses().subscribe(
+      (existingCourses: course[]) => {
+        // Check if the new course name is a duplicate
+        if (this.isDuplicateName(existingCourses, this.course.name)) {
+          this.toastService.stopLoader();
+          // Display an error message (e.g., using toastService)
+          //this.toastService.showError('Course name already exists.');
+          this.existingCourseName = true;
+        } else {
+          // If not a duplicate, add the course
+          this.addCourse(this.course)
+            .then(() => this.dialogRef.close(true))
+            .catch(error => console.log(error));
+        }
+      },
+      error => {
+        this.toastService.stopLoader();
+        console.log(error);
+      }
+    );
+  }
+
+
+  isDuplicateName(existingCourses: course[], newName: string): boolean {
+    return existingCourses.some(course => course.name === newName);
   }
 
   addCourse(course:course) :Promise<void> {
@@ -67,6 +95,9 @@ export class AddCoursePopupComponent {
       });
     });
   }
+
+
+
 
 
 }

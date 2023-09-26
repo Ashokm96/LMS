@@ -3,10 +3,11 @@
   <form [formGroup]="courseForm">
     <div class="form-group">
       <label for="name">Course Name:</label>
-      <input type="text" id="name" formControlName="name">
+      <input type="text" id="name" formControlName="name" (input)="emptyError()">
     <span *ngIf="courseForm.get('name')?.invalid && (courseForm.get('name')?.dirty || courseForm.get('name')?.touched)" class="error-text">
       {{ courseForm.get('name')?.hasError('required') ? 'Course Name is required' : courseForm.get('name')?.hasError('nonEmpty') ? 'Course Name cannot be empty' : courseForm.get('name')?.hasError('minlength') ? 'Course Name must be 5 characters long' : '' }}
     </span>
+    <span *ngIf="existingCourseName" class="error-text">Course name already exists.</span>
     </div>
     <div class="form-group">
       <label for="description">Description:</label>
