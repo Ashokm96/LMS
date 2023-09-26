@@ -15,7 +15,8 @@ import { CourseService } from '../../services/course.service';
 })
 export class HomeComponent {
   errorLabel!: boolean;
-  errorLabelMessage: any;
+  successLabel!: boolean;
+  notifyMessage: any;
   searchQuery = '';
   filteredCourses: any[] = [];
   isAdmin !: boolean;
@@ -36,11 +37,8 @@ export class HomeComponent {
         this.toast.stopLoader();
       },
       (error) => {
-        this.errorLabel = true;
-        this.errorLabelMessage = error.message;
+        this.showError("An error occured. contact your system administrator.");
         this.toast.stopLoader();
-        this.toast.showError(error.error.message);
-        console.log(error.message);
       });
   }
 
@@ -52,6 +50,7 @@ export class HomeComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.getCourse();
+        this.showSuccess("Course Added Successfully");
       }
       else {
         this.toast.stopLoader();
@@ -79,17 +78,12 @@ export class HomeComponent {
   deleteCourse(courseName: string) {
     this.courseService.deleteCourse(courseName).subscribe(
       (response) => {
-        this.errorLabel = true;
-        this.errorLabelMessage = response.message;
-        console.log(response.message);
-        console.log(response);
+        this.showSuccess(response.message);
         this.getCourse();
       },
       (error) => {
-        this.errorLabel = true;
-        this.errorLabelMessage = error.message;
         this.toast.stopLoader();
-        console.log(error);
+        this.showError("An error occured. contact your system administrator.");
       });
   }
 
@@ -117,4 +111,25 @@ export class HomeComponent {
     });
   }
 
+  closeNotify() {
+    this.errorLabel = false;
+    this.notifyMessage = null;
+    this.successLabel = false;
+  }
+
+  showError(errMsg : string) {
+    this.errorLabel = true;
+    this.notifyMessage = errMsg;
+    setTimeout(() => {
+      this.closeNotify();
+    }, 8000);
+  }
+
+  showSuccess(errMsg: string) {
+    this.successLabel = true;
+    this.notifyMessage = errMsg;
+    setTimeout(() => {
+      this.closeNotify();
+    }, 8000);
+  }
 }
