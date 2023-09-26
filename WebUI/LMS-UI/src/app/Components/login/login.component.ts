@@ -33,26 +33,35 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginUser).subscribe(
       (res) => {
         this.toast.stopLoader();
-        //this.toast.showSuccess('Login Successful');
+        if (res.message == "Username/Password incorrect.") {
+          this.error = res.message;
+        }
+        else {
+          //this.toast.showSuccess('Login Successful');
 
+          // Storing the token in local storage
+          localStorage.setItem('token', res.token);
 
-
-        // Storing the token in local storage
-        localStorage.setItem('token', res.token);
-
-
-
-        // Redirect based on user role
-        if (this.authService.isAdmin()) {
-          this.router.navigate(['home']);
-        } else {
-          this.router.navigate(['user-home']);
+          // Redirect based on user role
+          if (this.authService.isAdmin()) {
+            this.router.navigate(['admin']);
+          } else {
+            this.router.navigate(['user']);
+          }
         }
       },
       (error) => {
         this.toast.stopLoader();
-        this.toast.showError(error.error.message);
+        if (error.error.message == "Username/Password incorrect.") {
+          this.error = error.error.message;
+        } else {
+          this.toast.showError(error.error.message);
+        }
       }
     );
+  }
+
+  emptyError() {
+    this.error = '';
   }
 }
