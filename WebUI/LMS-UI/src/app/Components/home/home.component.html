@@ -6,11 +6,8 @@
   </div>
   <button routerLink="/login" (click)="logout()">Log Out</button>
 </div>
-<div class="toast-error">
-  <div>
-    <label>{{errorLabelMessage}}</label>
-  </div>
-</div>
+<div class="toast-error" *ngIf="errorLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
+<div class="toast-success" *ngIf="successLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
 <div class="table-container">
   <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="filterCourses()" />
   <button (click)="openAddCourseDialog()" *ngIf="isAdmin">Add Course</button>
