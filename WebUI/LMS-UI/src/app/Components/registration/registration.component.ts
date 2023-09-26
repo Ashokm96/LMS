@@ -12,7 +12,10 @@ import { CourseService } from '../../services/course.service';
 })
 export class RegistrationComponent {
   registrationForm !: FormGroup;
-  user: user = {} as user; 
+  user: user = {} as user;
+  errorLabel!: boolean;
+  successLabel!: boolean;
+  notifyMessage: any;
   constructor(private fb: FormBuilder,private courseService:CourseService,private toast:ToastService,private router:Router) {   }
 
   ngOnInit(): void {
@@ -53,17 +56,51 @@ export class RegistrationComponent {
 
       this.courseService.registerUser(this.user).subscribe({
         next: response => {
-          console.log(response);
+          if (response.message =="User details already exists.") {
+            this.showError(response.message);
+          }
+          else if (response.message == "Failed to register") {
+            this.showError(response.message);
+          }
+          else if (response.message == "An error occured. contact your system administrator.") {
+            this.showError(response.message);
+          }
+          else if (response.message == "Registered succefully") {
+            this.showSuccess("Registered succefully");
+          }
           this.toast.stopLoader();
-          this.toast.showSuccess("User Registered succefully");
-          //this.router.navigate(['login']);
           this.registrationForm.reset();
         },
         error: err => {
-          this.toast.showError("Failed to Register");
+          this.toast.stopLoader();
+          this.showError(err.error.message);
         }
       });
     }
   }
+
+  closeNotify() {
+    this.errorLabel = false;
+    this.notifyMessage = null;
+    this.successLabel = false;
+  }
+
+  showError(errMsg: string) {
+    this.errorLabel = true;
+    this.notifyMessage = errMsg;
+    setTimeout(() => {
+      this.closeNotify();
+    }, 8000);
+  }
+
+  showSuccess(errMsg: string) {
+    this.successLabel = true;
+    this.notifyMessage = errMsg;
+    setTimeout(() => {
+      this.closeNotify();
+    }, 8000);
+  }
+
+
 }
 

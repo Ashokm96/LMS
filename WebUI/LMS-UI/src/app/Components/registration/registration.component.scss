@@ -51,3 +51,12 @@ button:disabled {
 .error-text{
     color:red;
 }
+
+.close {
+  cursor: pointer;
+  float: right;
+  font-size: inherit;
+  /*right:1%;*/
+  padding: 0;
+  padding-right: 29px;
+}
