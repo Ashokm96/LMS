@@ -1,18 +1,22 @@
+
 <div class="registration-form">
   <h2>New Account Registration</h2>
   <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
+    <!--<div class="form-group">
       <label for="userId">UserID:</label>
       <input type="text" id="userId" formControlName="userId" required>
-    </div>
+    </div>-->
     <div class="form-group">
       <label for="userName">User Name:</label>
       <input type="text" id="userName" formControlName="userName" required>
+      <div class="error-text" *ngIf="registrationForm.get('userName')?.invalid && (registrationForm.get('userName')?.dirty || registrationForm.get('userName')?.touched)">
+        <div *ngIf="registrationForm.get('userName')?.hasError('required')">User Name is required.</div>
+      </div>
     </div>
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" id="email" formControlName="email" required>
-      <div *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
+      <div class="error-text" *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty || registrationForm.get('email')?.touched)">
         <div *ngIf="registrationForm.get('email')?.hasError('required')">Email is required.</div>
         <div *ngIf="registrationForm.get('email')?.hasError('email')">Invalid email format.</div>
       </div>
@@ -20,7 +24,7 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input type="password" id="password" formControlName="password" required>
-      <div *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
+      <div class="error-text" *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty || registrationForm.get('password')?.touched)">
         <div *ngIf="registrationForm.get('password')?.hasError('required')">Password is required.</div>
         <div *ngIf="registrationForm.get('password')?.hasError('pattern')">Password must be at least 8 characters long and contain both letters and numbers.</div>
       </div>
@@ -28,7 +32,7 @@
     <div class="form-group">
       <label for="confirmPassword">Confirm Password:</label>
       <input type="password" id="confirmPassword" formControlName="confirmPassword" required>
-      <div *ngIf="registrationForm.get('confirmPassword')?.invalid && (registrationForm.get('confirmPassword')?.dirty || registrationForm.get('confirmPassword')?.touched)">
+      <div class="error-text" *ngIf="registrationForm.get('confirmPassword')?.invalid && (registrationForm.get('confirmPassword')?.dirty || registrationForm.get('confirmPassword')?.touched)">
         <div *ngIf="registrationForm.hasError('passwordMismatch')">Passwords do not match.</div>
       </div>
     </div>

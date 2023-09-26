@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastService } from '../../Common/toast.service';
+import { user } from '../../models/user';
+import { CourseService } from '../../services/course.service';
 
 @Component({
   selector: 'app-registration',
@@ -8,8 +12,8 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 })
 export class RegistrationComponent {
   registrationForm !: FormGroup;
-
-  constructor(private fb: FormBuilder) {   }
+  user: user = {} as user; 
+  constructor(private fb: FormBuilder,private courseService:CourseService,private toast:ToastService,private router:Router) {   }
 
   ngOnInit(): void {
     this.initilizeForm();
@@ -17,7 +21,7 @@ export class RegistrationComponent {
 
   initilizeForm() {
     this.registrationForm = this.fb.group({
-      userId: ['', Validators.required],
+      //userId: ['', Validators.required],
       userName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
@@ -38,9 +42,27 @@ export class RegistrationComponent {
 
 
   onSubmit() {
+    this.toast.showLoader();
     if (this.registrationForm.valid) {
       // Perform registration logic here
-      console.log(this.registrationForm.value);
+      this.user.userName = this.registrationForm.get('userName')?.value;
+      this.user.email = this.registrationForm.get('email')?.value;
+      this.user.password = this.registrationForm.get('password')?.value;
+      this.user.confirmpassword = this.registrationForm.get('confirmPassword')?.value;
+      this.user.role = "User";
+
+      this.courseService.registerUser(this.user).subscribe({
+        next: response => {
+          console.log(response);
+          this.toast.stopLoader();
+          this.toast.showSuccess("User Registered succefully");
+          //this.router.navigate(['login']);
+          this.registrationForm.reset();
+        },
+        error: err => {
+          this.toast.showError("Failed to Register");
+        }
+      });
     }
   }
 }

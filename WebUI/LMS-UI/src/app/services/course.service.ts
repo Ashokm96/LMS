@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { course } from '../models/course';
+import { user } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,12 @@ export class CourseService {
     let url: string = environment.endpoints.apiBaseURL + environment.endpoints.deleteCourse;
     url = url.replace('{coursename}',coursename.toString());
     var returnValue = this.http.delete<any>(url);
+    return returnValue;
+  }
+
+  public registerUser(user: user): Observable<any> {
+    let url: string = environment.endpoints.apiBaseURL + environment.endpoints.addUser;
+    var returnValue = this.http.post<any>(url, user);
     return returnValue;
   }
 
