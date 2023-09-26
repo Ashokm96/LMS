@@ -1,4 +1,5 @@
-
+<div class="toast-error" *ngIf="errorLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
+<div class="toast-success" *ngIf="successLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
 <div class="registration-form">
   <h2>New Account Registration</h2>
   <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
