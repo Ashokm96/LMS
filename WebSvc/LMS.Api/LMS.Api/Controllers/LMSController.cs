@@ -23,7 +23,7 @@ namespace LMS.Api.Controllers
         [HttpGet]
         [Route("/api/v1.0/lms/courses/getall")]
         [Authorize]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult> Get()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace LMS.Api.Controllers
         [HttpGet]
         [Route("/api/v1.0/lms/courses/info/{technology}")]
         [Authorize]
-        public async Task<IActionResult> GetByCouseName(string technology)
+        public async Task<ActionResult> GetByCouseName(string technology)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace LMS.Api.Controllers
         [HttpGet]
         [Route("/api/v/1.0/lms/courses/get/{technology}/{durationFromRange}/{durationToRange}")]
         [Authorize]
-        public async Task<IActionResult> GetCouseByDuration(string technology,int durationFromRange,int durationToRange)
+        public async Task<ActionResult> GetCouseByDuration(string technology,int durationFromRange,int durationToRange)
         {
             try
             {
@@ -102,7 +102,8 @@ namespace LMS.Api.Controllers
                     {
                         return StatusCode((int)HttpStatusCode.Conflict, "Unable to add course.");
                     }
-                    return StatusCode((int)HttpStatusCode.Created, "Course Added.");
+                    //return StatusCode((int)HttpStatusCode.Created, "Course Added.");
+                    return StatusCode((int)HttpStatusCode.Created, new { message = "Course Added." });
                 }
                 catch (Exception ex)
                 {
@@ -129,19 +130,21 @@ namespace LMS.Api.Controllers
                 var res = await lmsService.GetCourse(coursename);
                 if (res == null)
                 {
-                    return StatusCode((int)HttpStatusCode.BadRequest, "Course details not found!");
+                    //return StatusCode((int)HttpStatusCode.BadRequest, "Course details not found!");
+                    return StatusCode((int)HttpStatusCode.BadRequest, new { message = "Course details not found!" });
                 }
                 var response = await lmsService.DeleteCourse(coursename);
                 if (response)
                 {
-                    return StatusCode((int)HttpStatusCode.OK, "Course deleted Successfully");
+                    return Ok(new { message = "Course deleted Successfully" });
+                    //return StatusCode((int)HttpStatusCode.OK, "Course deleted Successfully");
                 }
-                return StatusCode((int)HttpStatusCode.Conflict, "Unable to delete course.");
+                return StatusCode((int)HttpStatusCode.Conflict, new { message = "Unable to delete course." });
             }
             catch (Exception ex)
             {
                 logger.Error($"An error occurred in delete couse: {ex}.");
-                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occured. contact your system administrator.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "An error occured. contact your system administrator." });
             }
         }
     }
