@@ -11,8 +11,9 @@ export const environment = {
     addUser: 'api/v1.0/lms/user/register',
     getCourse: 'api/v1.0/lms/courses/getall',
     addCourse: 'api/v1.0/lms/courses/add',
-    deleteCourse: 'api/v1.0/lms/courses/delete/{coursename}'
-   
+    deleteCourse: 'api/v1.0/lms/courses/delete/{coursename}',
+    getCourseByTechnology:'api/v1.0/lms/courses/info/{technology}',
+    getCourseByDuration:'api/v1.0/lms/courses/info/{technology}/{durationFromRange}/{durationToRange}'
   }
 };
 
