@@ -34,33 +34,33 @@ namespace LMS.Api.Controllers
             }
             if (!users.Email.Contains("@") || !users.Email.Contains(".com"))
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, "Invalid email format.");
+                return StatusCode((int)HttpStatusCode.BadRequest, new { message = "Invalid email format." });
             }
             if (!IsPasswordValid(users.Password))
             {
-                return StatusCode((int)HttpStatusCode.BadRequest, "Password should be alphanumeric and at least 8 characters.");
+                return StatusCode((int)HttpStatusCode.BadRequest, new { message = "Password should be alphanumeric and at least 8 characters." });
             }
             //validate user details
             var userDetails = userService.ValidateUser(users.Email,users.UserName);
             if (userDetails.Result == "invalidUser")
             {
-                return StatusCode((int)HttpStatusCode.Conflict, "User details already exists.");
+                return StatusCode((int)HttpStatusCode.Conflict, new { message = "User details already exists." });
             }
             if (userDetails.Result == "error")
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occured. contact your system administrator.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "An error occured. contact your system administrator." });
             }
             //add new user
             userService.Register(users);
             if (users.UserID != null)
             {
-                return StatusCode((int)HttpStatusCode.Created, "Registered succefully");
+                return StatusCode((int)HttpStatusCode.Created, new { message = "Registered succefully" });
             }
             if (users.UserID == null)
             {
-                return StatusCode((int)HttpStatusCode.Conflict, "Failed to register");
+                return StatusCode((int)HttpStatusCode.Conflict, new { message = "Failed to register" });
             }
-            return StatusCode((int)HttpStatusCode.InternalServerError, "An error occured. contact your system administrator.");
+            return StatusCode((int)HttpStatusCode.InternalServerError, new { message = "An error occured. contact your system administrator." });
         }
 
         private bool IsPasswordValid(string password)
@@ -86,7 +86,7 @@ namespace LMS.Api.Controllers
             var token = userService.Authenticate(login.Username, login.Password);
             if (token == null)
             {
-                return StatusCode((int)HttpStatusCode.Unauthorized, "Username/Password are incorrect.");
+                return StatusCode((int)HttpStatusCode.Unauthorized,new { message="Username/Password incorrect."});
             }
             return StatusCode((int)HttpStatusCode.Created, new { Token = token });
         }
