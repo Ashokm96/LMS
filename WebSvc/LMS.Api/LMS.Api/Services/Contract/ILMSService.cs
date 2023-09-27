@@ -6,7 +6,7 @@ namespace LMS.Api.Services.Contract
     {
         Task<Course> AddCourse(Course course);
         Task<List<Course>> GetAllCourses();
-        Task<Course> GetCourse(string course);
+        Task<List<Course>> GetCourse(string course);
         Task<List<Course>> GetCouseByDuration(string course, int durationFromRange, int durationToRange);
         Task<Boolean> DeleteCourse(string courseName);
 
