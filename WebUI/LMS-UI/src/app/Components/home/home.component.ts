@@ -21,6 +21,8 @@ export class HomeComponent {
   filteredCourses: any[] = [];
   isAdmin !: boolean;
   courses!: course[];
+  currentPage = 1;
+  itemsPerPage = 5;
   constructor(private authService: AuthService, private router: Router, private toast: ToastService,private courseService:CourseService,private dialog:MatDialog) { }
 
   ngOnInit(): void {
@@ -95,21 +97,21 @@ export class HomeComponent {
     this.toast.stopLoader();
   }
 
-  filterCourses() {
-    this.filteredCourses = this.courses.filter((course) => {
-      const searchQuery = this.searchQuery.toLowerCase();
+  //filterCourses() {
+  //  this.filteredCourses = this.courses.filter((course) => {
+  //    const searchQuery = this.searchQuery.toLowerCase();
 
-      // Convert duration to a string for comparison
-      const durationString = course.duration.toString().toLowerCase();
+  //    // Convert duration to a string for comparison
+  //    const durationString = course.duration.toString().toLowerCase();
 
-      return (
-        course.name.toLowerCase().includes(searchQuery) ||
-        course.description.toLowerCase().includes(searchQuery) ||
-        course.technology.toLowerCase().includes(searchQuery) ||
-        durationString.includes(searchQuery)
-      );
-    });
-  }
+  //    return (
+  //      course.name.toLowerCase().includes(searchQuery) ||
+  //      course.description.toLowerCase().includes(searchQuery) ||
+  //      course.technology.toLowerCase().includes(searchQuery) ||
+  //      durationString.includes(searchQuery)
+  //    );
+  //  });
+  //}
 
   closeNotify() {
     this.errorLabel = false;
@@ -131,5 +133,32 @@ export class HomeComponent {
     setTimeout(() => {
       this.closeNotify();
     }, 8000);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredCourses.length / this.itemsPerPage);
+  }
+
+  // Calculate the start and end index for the current page
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.itemsPerPage;
+  }
+
+  get endIndex(): number {
+    return this.currentPage * this.itemsPerPage;
+  }
+
+  // Function to navigate to the previous page
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  // Function to navigate to the next page
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
   }
 }
