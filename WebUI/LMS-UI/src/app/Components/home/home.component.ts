@@ -45,24 +45,25 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
     durationValidation(group: AbstractControl): { [key: string]: boolean } | null {
       const durationFrom = group.get('durationFrom')?.value;
       const durationTo = group.get('durationTo')?.value;
-
       if (durationFrom !== null && durationTo === null) {
         return { 'durationToRequired': true };
       }
-
       if (durationFrom !== null && durationTo !== null && durationFrom >= durationTo) {
         return { 'durationToRequired': true };
       }
-
-
       return null;
     }
 
     applyFilter() {
       if (this.filterForm.valid) {
-        // Filter data based on the form values
-        console.log('Filtering data:', this.filterForm.value);
-        // Add your filtering logic here
+        const durationFrom = this.filterForm.get('durationFrom')?.value;
+        const durationTo = this.filterForm.get('durationTo')?.value;
+        const technology = this.filterForm.get('technology')?.value;
+        if (durationFrom!=null && durationTo!=null && technology!=null) {
+          console.log("All");
+        } else if (technology != null) {
+          console.log("tech");
+        } 
       } else {
         console.log('Please fill out all fields with valid values.');
       }
