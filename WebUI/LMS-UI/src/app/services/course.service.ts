@@ -37,10 +37,11 @@ export class CourseService {
     return returnValue;
   }
 
-  public getCoursesByTech(tech:string): Observable<course[]> {
+  public getCoursesByTech(tech:string): Observable<course> {
     let url: string = environment.endpoints.apiBaseURL + environment.endpoints.getCourseByTechnology;
     url = url.replace('{technology}', tech.toString());
-    return this.http.get<course[]>(url);
+    var returnValue = this.http.get<course>(url);
+    return returnValue;
   }
 
   public getCoursesByDuration(tech: string,from:string,to:string): Observable<course[]> {

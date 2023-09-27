@@ -55,6 +55,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
     }
 
     applyFilter() {
+      this.toast.showLoader();
       if (this.filterForm.valid) {
         const durationFrom = this.filterForm.get('durationFrom')?.value;
         const durationTo = this.filterForm.get('durationTo')?.value;
@@ -62,11 +63,25 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
         if (durationFrom!=null && durationTo!=null && technology!=null) {
           console.log("All");
         } else if (technology != null) {
-          console.log("tech");
+          this.getCourseByTech(technology);
         } 
       } else {
         console.log('Please fill out all fields with valid values.');
       }
+    }
+
+    getCourseByTech(technology:string) {
+      this.courseService.getCoursesByTech(technology).subscribe({
+        next: response => {
+          console.log(response);
+          this.courses = [response];
+          this.toast.stopLoader();
+        },
+        error: err => {
+          this.showError("An error occured. contact your system administrator.");
+          this.toast.stopLoader();
+        }
+      });
     }
 
     getCourse() {
@@ -158,10 +173,10 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
     }
 
     logout() {
-      this.toast.showLoader();
+      this.toast.showLoader(); 
       this.authService.logout();
       this.router.navigate(["login"]);
-      this.toast.showSuccess('Logout Successfully!');
+      //this.toast.showSuccess('Logout Successfully!');
       this.toast.stopLoader();
     }
    
