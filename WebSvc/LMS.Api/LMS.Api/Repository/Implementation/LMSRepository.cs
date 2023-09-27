@@ -33,7 +33,7 @@ namespace LMS.Api.Repository.Implementation
         {
             try
             {
-               var res = await dbContext.course.DeleteOneAsync(x => x.Technology == courseName);
+               var res = await dbContext.course.DeleteOneAsync(x => x.Name == courseName);
                if (res.DeletedCount>0 && res.IsAcknowledged)
                {
                     return true;
@@ -60,12 +60,13 @@ namespace LMS.Api.Repository.Implementation
             }
         }
 
-        public async Task<Course> GetCourse(string course)
+        public async Task<List<Course>> GetCourse(string course)
         {
             try
             {
                 var course_filter = Builders<Course>.Filter.Eq(m => m.Technology, course);
-                return await dbContext.course.Find(course_filter).FirstOrDefaultAsync();
+                var courses = dbContext.course.Find(course_filter).ToList();
+                return courses;
             }
             catch (Exception ex)
             {

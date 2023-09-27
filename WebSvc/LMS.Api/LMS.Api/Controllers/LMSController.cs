@@ -65,7 +65,7 @@ namespace LMS.Api.Controllers
         /// get course by technology and duration
         /// </summary>
         [HttpGet]
-        [Route("/api/v/1.0/lms/courses/get/{technology}/{durationFromRange}/{durationToRange}")]
+        [Route("/api/v1.0/lms/courses/get/{technology}/{durationFromRange}/{durationToRange}")]
         [Authorize]
         public async Task<ActionResult> GetCouseByDuration(string technology,int durationFromRange,int durationToRange)
         {
