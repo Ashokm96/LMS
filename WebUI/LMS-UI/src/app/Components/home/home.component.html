@@ -8,7 +8,8 @@
 <div class="toast-error" *ngIf="errorLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
 <div class="toast-success" *ngIf="successLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
 <div class="table-container">
-  <input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="filterCourses()" />
+  <!--<input type="text" placeholder="Search" [(ngModel)]="searchQuery" (input)="filterCourses()" />-->
+  <input type="text" placeholder="Search" [(ngModel)]="searchQuery"/>
   <button (click)="openAddCourseDialog()" *ngIf="isAdmin">Add Course</button>
 
   <table>
@@ -23,7 +24,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let course of filteredCourses">
+      <!--<tr *ngFor="let course of filteredCourses">-->
+      <tr *ngFor="let course of filteredCourses.slice(startIndex, endIndex)">
         <td>{{ course.name }}</td>
         <td>{{ course.description }}</td>
         <td>{{ course.technology }}</td>
@@ -33,4 +35,9 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div class="pagination-controls">
+  <button (click)="previousPage()">Prev</button>
+  <span>{{ currentPage }} / {{ totalPages }}</span>
+  <button (click)="nextPage()">Next</button>
 </div>

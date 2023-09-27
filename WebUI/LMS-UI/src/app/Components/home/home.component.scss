@@ -52,3 +52,33 @@ tr:nth-child(even) {
     padding:0;
     padding-right:29px;
 }
+
+
+
+
+.pagination-controls {
+  text-align: right;
+  margin-top: 20px;
+  margin-right:16px;
+}
+
+.pagination-controls button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.table-container table {
+  width: 100%;
+}
+
+.table-container th,
+.table-container td {
+  text-align: left;
+  padding: 8px;
+}
+
+
+
+
+
