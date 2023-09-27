@@ -50,6 +50,11 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
         return { 'durationToRequired': true };
       }
 
+      if (durationFrom !== null && durationTo !== null && durationFrom >= durationTo) {
+        return { 'durationToRequired': true };
+      }
+
+
       return null;
     }
 
