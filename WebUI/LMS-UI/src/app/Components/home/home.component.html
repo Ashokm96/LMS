@@ -11,18 +11,18 @@
   <!--<input type="text" placeholder="Search" [(ngModel)]="searchQuery"/>-->
   <form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="filter-form">
     <div class="form-group">
-      <label for="technology">Technology:</label>
+      <label for="technology">Technology :</label>
       <input type="text" id="technology" formControlName="technology" required />
     </div>
 
     <div class="form-group">
-      <label for="durationFrom">Start Duration</label>
-      <input type="number" id="durationFrom" formControlName="durationFrom" />
+      <label for="durationFrom">Duration Range :</label>
+      <input style="width: 25px; text-align: center; " type="number" id="durationFrom" formControlName="durationFrom" />
     </div>
 
     <div class="form-group">
-      <label for="durationTo">End Duration</label>
-      <input type="number" id="durationTo" formControlName="durationTo"/>
+      <!--<label for="durationTo">End Duration</label>-->
+      <input style="width: 25px; text-align: center; " type="number" id="durationTo" formControlName="durationTo"/>
     </div>
 
     <div class="form-group">
