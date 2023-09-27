@@ -61,7 +61,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
         const durationTo = this.filterForm.get('durationTo')?.value;
         const technology = this.filterForm.get('technology')?.value;
         if (durationFrom!=null && durationTo!=null && technology!=null) {
-          console.log("All");
+          this.getCourseByDuration(technology,durationFrom,durationTo);
         } else if (technology != null) {
           this.getCourseByTech(technology);
         } 
@@ -73,8 +73,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
     getCourseByTech(technology:string) {
       this.courseService.getCoursesByTech(technology).subscribe({
         next: response => {
-          console.log(response);
-          this.courses = [response];
+          this.courses = response;
           this.toast.stopLoader();
         },
         error: err => {
@@ -83,6 +82,20 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
         }
       });
     }
+
+    getCourseByDuration(technology: string, durationFrom: number, durationTo:number) {
+      this.courseService.getCoursesByDuration(technology,durationFrom,durationTo).subscribe({
+        next: response => {
+          this.courses = response;
+          this.toast.stopLoader();
+        },
+        error: err => {
+          this.showError("An error occured. contact your system administrator.");
+          this.toast.stopLoader();
+        }
+      });
+    }
+
 
     getCourse() {
       this.toast.showLoader();
@@ -133,7 +146,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
     }
 
     openDeleteCourseDialog(course: course) {
-      var tech = course.technology;
+      var tech = course.name;
       const dialogRef = this.dialog.open(DeleteCoursePopupComponent, {
         width: '300px',
         data: { tech }
