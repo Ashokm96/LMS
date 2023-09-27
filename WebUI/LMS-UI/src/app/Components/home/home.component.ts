@@ -18,7 +18,6 @@ export class HomeComponent {
   successLabel!: boolean;
   notifyMessage: any;
   searchQuery = '';
-  filteredCourses: any[] = [];
   isAdmin !: boolean;
   courses!: course[];
   currentPage = 1;
@@ -35,7 +34,6 @@ export class HomeComponent {
     var res = this.courseService.getCourses().subscribe(
       (response) => {
         this.courses = response;
-        this.filteredCourses = [...this.courses];
         this.toast.stopLoader();
       },
       (error) => {
@@ -51,13 +49,32 @@ export class HomeComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getCourse();
+        this.refreshPagesAfterAdded();
         this.showSuccess("Course Added Successfully");
       }
       else {
         this.toast.stopLoader();
       }
     });
+  }
+
+  refreshPagesAfterAdded() {
+    this.courseService.getCourses().subscribe(
+      (response) => {
+        this.courses = response;
+        var count = this.totalPages;
+        if (count == 1) {
+          this.currentPage = 1;
+        } else {
+          this.currentPage = count;
+        }
+        this.toast.stopLoader();
+      },
+      (error) => {
+        this.showError("An error occured. contact your system administrator.");
+        this.toast.stopLoader();
+      });
+   
   }
 
   openDeleteCourseDialog(course: course) {
@@ -81,12 +98,23 @@ export class HomeComponent {
     this.courseService.deleteCourse(courseName).subscribe(
       (response) => {
         this.showSuccess(response.message);
+        this.refreshPagesAfterDeleted(courseName);
         this.getCourse();
       },
       (error) => {
         this.toast.stopLoader();
         this.showError("An error occured. contact your system administrator.");
       });
+  }
+
+  refreshPagesAfterDeleted(courseName:string) {
+    // Remove the deleted course from the courses array
+    this.courses = this.courses.filter(course => course.technology !== courseName);
+    // Reset the current page to the first page
+    var count = this.totalPages;
+    if (count == 1) {
+      this.currentPage = 1;
+    }
   }
 
   logout() {
@@ -96,23 +124,7 @@ export class HomeComponent {
     this.toast.showSuccess('Logout Successfully!');
     this.toast.stopLoader();
   }
-
-  //filterCourses() {
-  //  this.filteredCourses = this.courses.filter((course) => {
-  //    const searchQuery = this.searchQuery.toLowerCase();
-
-  //    // Convert duration to a string for comparison
-  //    const durationString = course.duration.toString().toLowerCase();
-
-  //    return (
-  //      course.name.toLowerCase().includes(searchQuery) ||
-  //      course.description.toLowerCase().includes(searchQuery) ||
-  //      course.technology.toLowerCase().includes(searchQuery) ||
-  //      durationString.includes(searchQuery)
-  //    );
-  //  });
-  //}
-
+   
   closeNotify() {
     this.errorLabel = false;
     this.notifyMessage = null;
@@ -136,7 +148,7 @@ export class HomeComponent {
   }
 
   get totalPages(): number {
-    return Math.ceil(this.filteredCourses.length / this.itemsPerPage);
+    return Math.ceil(this.courses.length / this.itemsPerPage);
   }
 
   // Calculate the start and end index for the current page
