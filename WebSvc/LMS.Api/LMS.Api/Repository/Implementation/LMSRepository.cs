@@ -71,7 +71,7 @@ namespace LMS.Api.Repository.Implementation
             catch (Exception ex)
             {
                 logger.Error($"An error occurred in get course: {ex}");
-                return null;
+                return new List<Course>();
             }
         }
 
@@ -81,7 +81,8 @@ namespace LMS.Api.Repository.Implementation
             {
                 var filter = Builders<Course>.Filter.And(
                  Builders<Course>.Filter.Gte(course => course.Duration, durationFromRange),
-                 Builders<Course>.Filter.Lte(course => course.Duration, durationToRange));
+                 Builders<Course>.Filter.Lte(course => course.Duration, durationToRange),
+                 Builders<Course>.Filter.Eq(course=>course.Technology,course));
 
                 var courses = dbContext.course.Find(filter).ToList();
                 return courses;

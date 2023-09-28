@@ -48,10 +48,10 @@ namespace LMS.Api.Controllers
             try
             {
                 var res = await lmsService.GetCourse(technology);
-                if (res==null)
-                {
-                    return StatusCode((int)HttpStatusCode.NotFound, "No course details found.");
-                }
+                //if (res==null)
+                //{
+                //    return StatusCode((int)HttpStatusCode.NotFound, "No course details found.");
+                //}
                 return StatusCode((int)HttpStatusCode.OK, res);
             }
             catch (Exception ex)
@@ -72,10 +72,10 @@ namespace LMS.Api.Controllers
             try
             {
                 var res = await lmsService.GetCouseByDuration(technology,durationFromRange,durationToRange);
-                if (res.Count()==0)
-                {
-                    return StatusCode((int)HttpStatusCode.NotFound, "No course details found.");
-                }
+                //if (res.Count()==0)
+                //{
+                //    return StatusCode((int)HttpStatusCode.NotFound, "No course details found.");
+                //}
                 return StatusCode((int)HttpStatusCode.OK, res);
             }
             catch (Exception ex)
