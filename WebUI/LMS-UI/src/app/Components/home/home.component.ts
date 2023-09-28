@@ -22,7 +22,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
     isAdmin !: boolean;
     courses!: course[];
     currentPage = 1;
-    itemsPerPage = 5;
+    itemsPerPage = 8;
     filterForm!: FormGroup;
     constructor(private authService: AuthService, private router: Router, private toast: ToastService, private courseService: CourseService, private dialog: MatDialog, private formBuilder: FormBuilder) { }
 

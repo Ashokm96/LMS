@@ -95,9 +95,4 @@ export class AddCoursePopupComponent {
       });
     });
   }
-
-
-
-
-
 }
