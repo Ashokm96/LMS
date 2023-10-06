@@ -9,7 +9,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" formControlName="password" required (input)="emptyError()">
       </div>
-      <div style="color:red">{{error}}</div>
+      <div style="color:red;font-family:sans-serif">{{error}}</div>
       <div>
         <button type="submit" [disabled]="!loginForm.valid">Login</button>
       </div>
