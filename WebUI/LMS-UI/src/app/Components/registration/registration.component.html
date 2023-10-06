@@ -1,7 +1,7 @@
 <div class="toast-error" *ngIf="errorLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
 <div class="toast-success" *ngIf="successLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
 <div class="registration-form">
-  <h2>New Account Registration</h2>
+  <h2 style="text-align:center">New Account Registration</h2>
   <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <!--<div class="form-group">
       <label for="userId">UserID:</label>
@@ -38,7 +38,7 @@
       </div>
     </div>
     <button type="submit" [disabled]="registrationForm.invalid">Register</button>
-    <div style="margin: 25px 92px;">
+    <div style="margin: 25px 85px;">
       <label>Already a member <a class="login" [routerLink]="['/login']">Login</a> here!</label>
     </div>
   </form>

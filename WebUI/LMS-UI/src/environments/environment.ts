@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   endpoints: {
-    apiBaseURL: 'https://localhost:44364/',
+    apiBaseURL: 'https://localhost:7269/',
     login: 'api/v1.0/lms/user/login',
     addUser: 'api/v1.0/lms/user/register',
     getCourse: 'api/v1.0/lms/courses/getall',
