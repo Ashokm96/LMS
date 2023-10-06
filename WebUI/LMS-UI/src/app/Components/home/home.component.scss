@@ -63,8 +63,9 @@ tr:nth-child(even) {
   margin-right:16px;*/
   text-align: center;
   margin-top: 0px;
-  margin-bottom: 5px;
+  margin-bottom: 9px;
   margin-left: 40%;
+  font-family:sans-serif;
 }
 
 .pagination-controls button {
@@ -75,6 +76,7 @@ tr:nth-child(even) {
 
 .table-container table {
   width: 100%;
+  font-family:sans-serif;
 }
 
 .table-container th,
@@ -91,13 +93,15 @@ tr:nth-child(even) {
 }
 
 .form-group {
-  margin-right: 10px;
+  margin-right: 7px;
   margin-bottom:10px;
+  font-family:sans-serif;
 }
 
 label {
   font-weight: bold;
   margin-right: 5px;
+  font-family:sans-serif;
 }
 
 input[type="text"],

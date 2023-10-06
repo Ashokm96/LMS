@@ -3,7 +3,7 @@
     <label style="font-size:35px">LMS</label><br />
     <label>Learning Management System</label>
   </div>
-  <button routerLink="/login" (click)="logout()">Log Out</button>
+  <button style="font-size: 15px; font-weight: 600;" routerLink="/login" (click)="logout()">Log Out</button>
 </div>
 <div class="toast-error" *ngIf="errorLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
 <div class="toast-success" *ngIf="successLabel"><div style="margin-left:14px">{{notifyMessage}}<span class="close" (click)="closeNotify()">X</span></div></div>
@@ -63,10 +63,11 @@
         <td><a [href]="course.launchUrl" target="_blank">{{ course.launchUrl }}</a></td>
         <td *ngIf="isAdmin"><button (click)="openDeleteCourseDialog(course)">Delete</button></td>
       </tr>
-      <!--<tr>
-        No Course Details Found.
-      </tr>-->
+
     </tbody>
   </table>
+  <div style="text-align: center; border: 1px solid #ddd; margin-top: 0px; padding: 0px; font-family: sans-serif; " *ngIf="courses.length == 0">
+    <p> No Course Details Found.</p>
+  </div>
 </div>
 
