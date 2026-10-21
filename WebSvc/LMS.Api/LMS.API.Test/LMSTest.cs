@@ -34,7 +34,7 @@ namespace LMS.API.Test
         {
             // Arrange
             string validCourseName = "ValidCourse";
-            lmsServiceMock.Setup(x => x.GetCourse(validCourseName)).ReturnsAsync(new Course());
+            lmsServiceMock.Setup(x => x.GetCourse(validCourseName)).ReturnsAsync(new List<Course>());
             lmsServiceMock.Setup(x => x.DeleteCourse(validCourseName)).ReturnsAsync(true);
 
             // Act
@@ -50,7 +50,7 @@ namespace LMS.API.Test
         {
             // Arrange
             string validCourseName = "ValidCourse";
-            lmsServiceMock.Setup(x => x.GetCourse(validCourseName)).ReturnsAsync(new Course());
+            lmsServiceMock.Setup(x => x.GetCourse(validCourseName)).ReturnsAsync(new List<Course>());
             lmsServiceMock.Setup(x => x.DeleteCourse(validCourseName)).ReturnsAsync(false);
 
             // Act

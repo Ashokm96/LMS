@@ -66,18 +66,18 @@ namespace LMS.API.Test
         }
 
         [Test]
-        public async Task GetCourse_Should_ReturnCourse()
+        public async Task GetCourse_Should_ReturnCourses()
         {
             // Arrange
             string courseName = "TestCourse";
-            var course = new Course { Name = courseName };
-            lmsRepositoryMock.Setup(repo => repo.GetCourse(courseName)).ReturnsAsync(course);
+            var courses = new List<Course> { new Course { Name = courseName } };
+            lmsRepositoryMock.Setup(repo => repo.GetCourse(courseName)).ReturnsAsync(courses);
 
             // Act
             var result = await lmsService.GetCourse(courseName);
 
             // Assert
-            Assert.AreEqual(course, result);
+            CollectionAssert.AreEqual(courses, result);
         }
 
         [Test]
