@@ -12,6 +12,11 @@ permissions:
 jobs:
   dotnet:
     runs-on: ubuntu-latest
+    env:
+      JWT__SECRETKEY: "ci-test-secret-key-must-be-32-chars-long-for-validation"
+      JWT__ISSUER: "LMS-CI"
+      DBCONFIGURATION__CONNECTIONSTRING: "mongodb://localhost:27017"
+      DBCONFIGURATION__DATABASENAME: "LMS_Test"
     defaults:
       run:
         working-directory: WebSvc/LMS.Api
@@ -19,12 +24,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
       - run: dotnet restore LMS.Api.sln
       - run: dotnet build LMS.Api.sln --configuration Release --no-restore
-      - run: dotnet test LMS.Api.sln --configuration Release --no-build --collect:"XPlat Code Coverage"
-      - name: Check vulnerable NuGet packages
-        run: dotnet list LMS.Api/LMS.Api.csproj package --vulnerable --include-transitive
+      - run: dotnet test LMS.Api.sln --no-build --verbosity normal
 
   frontend:
     runs-on: ubuntu-latest
@@ -42,12 +45,21 @@ jobs:
       - run: npm run build
       - run: npm test -- --watch=false --browsers=ChromeHeadless
 
-  secret-scan:
+  security:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: WebSvc/LMS.Api
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet restore LMS.Api.sln
+      - name: Check vulnerable NuGet packages
+        run: dotnet list LMS.Api/LMS.Api.csproj package --vulnerable --include-transitive
       - uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
