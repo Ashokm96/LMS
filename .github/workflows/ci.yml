@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  dotnet:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: WebSvc/LMS.Api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+      - run: dotnet restore LMS.Api.sln
+      - run: dotnet build LMS.Api.sln --configuration Release --no-restore
+      - run: dotnet test LMS.Api.sln --configuration Release --no-build --collect:"XPlat Code Coverage"
+      - name: Check vulnerable NuGet packages
+        run: dotnet list LMS.Api/LMS.Api.csproj package --vulnerable --include-transitive
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: WebUI/LMS-UI
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: npm
+          cache-dependency-path: WebUI/LMS-UI/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm test -- --watch=false --browsers=ChromeHeadless
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

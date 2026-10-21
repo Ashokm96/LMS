@@ -1,0 +1,28 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  api:
+    build:
+      context: .
+      dockerfile: WebSvc/LMS.Api/LMS.Api/Dockerfile
+    depends_on:
+      - mongo
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      DBCONFIGURATION__CONNECTIONSTRING: mongodb://mongo:27017
+      DBCONFIGURATION__DATABASENAME: LearningManagementSystem
+      JWT__ISSUER: LearningManagementSystem
+      JWT__SECRETKEY: ${JWT__SECRETKEY:?Set JWT__SECRETKEY in your .env file}
+      JWT__EXPIRATIONINMINUTES: 60
+    ports:
+      - "8080:8080"
+
+volumes:
+  mongo-data:

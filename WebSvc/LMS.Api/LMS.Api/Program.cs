@@ -15,6 +15,27 @@ var builder = WebApplication.CreateBuilder(args);
 var log4netRepository = log4net.LogManager.GetRepository(Assembly.GetEntryAssembly());
 log4net.Config.XmlConfigurator.Configure(log4netRepository, new FileInfo("log4net.config"));
 
+static string RequireConfiguration(IConfiguration configuration, string key)
+{
+    var value = configuration[key];
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        throw new InvalidOperationException($"Required configuration '{key}' is missing. Set it through environment variables or user secrets.");
+    }
+
+    return value;
+}
+
+var jwtSecret = RequireConfiguration(builder.Configuration, "Jwt:SecretKey");
+if (jwtSecret.Length < 32)
+{
+    throw new InvalidOperationException("Jwt:SecretKey must be at least 32 characters long.");
+}
+
+RequireConfiguration(builder.Configuration, "Jwt:Issuer");
+RequireConfiguration(builder.Configuration, "DBConfiguration:ConnectionString");
+RequireConfiguration(builder.Configuration, "DBConfiguration:DatabaseName");
+
 builder.Services.AddControllers();
 builder.Services.AddCors(options => 
 { 
@@ -67,7 +88,7 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:SecretKey"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
         };
     });
 builder.Services.AddAuthorization(options =>
@@ -106,6 +127,10 @@ builder.Host.ConfigureLogging(logger => {
 });
 
 var app = builder.Build();
+
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }))
+    .AllowAnonymous();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
