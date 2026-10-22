@@ -220,7 +220,7 @@ namespace LMS.API.Test
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.Created, result.StatusCode);
-            Assert.AreEqual("Course Added.", result.Value);
+            Assert.AreEqual("Course Added.", GetMessage(result));
         }
 
         [Test]
