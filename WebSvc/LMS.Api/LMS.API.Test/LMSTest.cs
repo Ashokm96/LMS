@@ -21,6 +21,12 @@ namespace LMS.API.Test
         private Mock<ILogger<LMSController>> mockLogger;
         private LMSController lmsController;
 
+        private static string GetMessage(ObjectResult result)
+        {
+            return result.Value?.GetType().GetProperty("message")?.GetValue(result.Value)?.ToString()
+                ?? result.Value?.ToString();
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -42,7 +48,7 @@ namespace LMS.API.Test
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
-            Assert.AreEqual("Course deleted Successfully", result.Value);
+            Assert.AreEqual("Course deleted Successfully", GetMessage(result));
         }
 
         [Test]
@@ -58,7 +64,7 @@ namespace LMS.API.Test
 
             // Assert
             Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
-            Assert.AreEqual("Unable to delete course.", result.Value);
+            Assert.AreEqual("Unable to delete course.", GetMessage(result));
         }
 
         [Test]
@@ -75,7 +81,7 @@ namespace LMS.API.Test
             Assert.IsInstanceOf<ObjectResult>(result);
             var internalServerErrorResult = result as ObjectResult;
             Assert.AreEqual((int)HttpStatusCode.InternalServerError, internalServerErrorResult.StatusCode);
-            Assert.AreEqual("An error occured. contact your system administrator.", internalServerErrorResult.Value);
+            Assert.AreEqual("An error occured. contact your system administrator.", GetMessage(internalServerErrorResult));
         }
 
         [Test]

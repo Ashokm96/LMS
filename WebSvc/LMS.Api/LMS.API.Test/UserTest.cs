@@ -21,6 +21,12 @@ namespace LMS.API.Test
         private UserController _controller;
         private Mock<IUserService> _userServiceMock;
 
+        private static string GetMessage(ObjectResult result)
+        {
+            return result.Value?.GetType().GetProperty("message")?.GetValue(result.Value)?.ToString()
+                ?? result.Value?.ToString();
+        }
+
         [SetUp]
         public void Setup()
         {
@@ -59,7 +65,7 @@ namespace LMS.API.Test
             // Assert
             Assert.NotNull(actionResult);
             Assert.That(actionResult.StatusCode, Is.EqualTo(401));
-            Assert.That(actionResult.Value, Is.EqualTo("Username/Password are incorrect."));
+            Assert.That(GetMessage(actionResult), Is.EqualTo("Username/Password incorrect."));
         }
 
         [Test]
@@ -92,7 +98,7 @@ namespace LMS.API.Test
             // Assert
             Assert.NotNull(actionResult);
             Assert.That(actionResult.StatusCode, Is.EqualTo(400));
-            Assert.That(actionResult.Value, Is.EqualTo("Invalid email format."));
+            Assert.That(GetMessage(actionResult), Is.EqualTo("Invalid email format."));
         }
 
         [Test]
@@ -108,7 +114,7 @@ namespace LMS.API.Test
             // Assert
             Assert.NotNull(actionResult);
             Assert.That(actionResult.StatusCode, Is.EqualTo(400));
-            Assert.That(actionResult.Value, Is.EqualTo("Password should be alphanumeric and at least 8 characters."));
+            Assert.That(GetMessage(actionResult), Is.EqualTo("Password should be alphanumeric and at least 8 characters."));
 
         }
 
@@ -126,7 +132,7 @@ namespace LMS.API.Test
             // Assert
             Assert.NotNull(actionResult);
             Assert.That(actionResult.StatusCode, Is.EqualTo(409));
-            Assert.That(actionResult.Value, Is.EqualTo("User details already exists."));
+            Assert.That(GetMessage(actionResult), Is.EqualTo("User details already exists."));
         }
 
         [Test]
@@ -148,7 +154,7 @@ namespace LMS.API.Test
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.InternalServerError, result.StatusCode);
-            Assert.AreEqual("An error occured. contact your system administrator.", result.Value);
+            Assert.AreEqual("An error occured. contact your system administrator.", GetMessage(result));
         }
 
         [Test]
@@ -170,7 +176,7 @@ namespace LMS.API.Test
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
-            Assert.AreEqual("Failed to register", result.Value);
+            Assert.AreEqual("Failed to register", GetMessage(result));
         }
 
         [Test]
@@ -194,7 +200,7 @@ namespace LMS.API.Test
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual((int)HttpStatusCode.Created, result.StatusCode);
-            Assert.AreEqual("Registered succefully", result.Value);
+            Assert.AreEqual("Registered succefully", GetMessage(result));
         }
     }
 }
