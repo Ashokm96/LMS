@@ -27,7 +27,7 @@ jobs:
           dotnet-version: '8.0.x'
       - run: dotnet restore LMS.Api.sln
       - run: dotnet build LMS.Api.sln --configuration Release --no-restore
-      - run: dotnet test LMS.Api.sln --no-build --verbosity normal
+      - run: dotnet test LMS.Api.sln --configuration Release --no-build --verbosity normal
 
   frontend:
     runs-on: ubuntu-latest

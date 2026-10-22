@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestSupportModule } from '../../testing/test-support.module';
 
 import { DeleteCoursePopupComponent } from './delete-course-popup.component';
 
@@ -8,6 +9,7 @@ describe('DeleteCoursePopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [TestSupportModule],
       declarations: [ DeleteCoursePopupComponent ]
     })
     .compileComponents();

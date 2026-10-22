@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestSupportModule } from '../../testing/test-support.module';
 
 import { AddCoursePopupComponent } from './add-course-popup.component';
 
@@ -8,6 +9,7 @@ describe('AddCoursePopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [TestSupportModule],
       declarations: [ AddCoursePopupComponent ]
     })
     .compileComponents();
