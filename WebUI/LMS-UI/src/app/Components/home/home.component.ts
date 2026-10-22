@@ -20,7 +20,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
     notifyMessage: any;
     searchQuery = '';
     isAdmin !: boolean;
-    courses!: course[];
+    courses: course[] = [];
     currentPage = 1;
     itemsPerPage = 8;
     filterForm!: FormGroup;

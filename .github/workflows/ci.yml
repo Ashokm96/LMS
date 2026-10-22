@@ -25,6 +25,9 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
       - run: dotnet restore LMS.Api.sln
       - run: dotnet build LMS.Api.sln --configuration Release --no-restore
       - run: dotnet test LMS.Api.sln --configuration Release --no-build --verbosity normal
